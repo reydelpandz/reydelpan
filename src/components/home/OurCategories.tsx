@@ -20,7 +20,7 @@ const OurCategories = ({ categories }: OurCategoriesProps) => {
                     >
                         <img
                             className="size-full object-cover rounded-md "
-                            src={"/images/banner1.jpg"}
+                            src={category.image}
                             alt={category.label}
                         />
                         <div className="absolute inset-0 bg-black/20 group-hover:bg-primary/20 transition duration-300 rounded-md size-full" />
