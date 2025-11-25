@@ -20,7 +20,7 @@ const OurCategories = ({ categories }: OurCategoriesProps) => {
                     >
                         <img
                             className="size-full object-cover rounded-md "
-                            src={category.image}
+                            src={category.image ?? "/placeholder.svg"}
                             alt={category.label}
                         />
                         <div className="absolute inset-0 bg-black/20 group-hover:bg-primary/20 transition duration-300 rounded-md size-full" />
