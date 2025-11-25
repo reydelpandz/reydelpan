@@ -69,7 +69,7 @@ export default function ContactModal() {
                                 href={item.href}
                                 className="flex items-center gap-3 rounded-lg border border-input bg-background p-4 transition-colors hover:bg-accent"
                             >
-                                <Icon className="h-5 w-5 flex-shrink-0" />
+                                <Icon className="h-5 w-5 shrink-0" />
                                 <div className="text-right flex-1">
                                     <p className="text-sm text-muted-foreground">
                                         {item.label}
