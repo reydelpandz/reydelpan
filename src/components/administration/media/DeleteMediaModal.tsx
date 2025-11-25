@@ -22,6 +22,7 @@ const DeleteMediaModal = () => {
 
         if (result.success) {
             toast.success(result.message);
+            toggle("deleteMedia");
         } else {
             toast.error(result.error);
         }

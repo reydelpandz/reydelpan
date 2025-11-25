@@ -41,17 +41,13 @@ export const permissions: Record<Role | "GUEST", Permission[]> = {
     ADMIN: ["*"],
 
     MANAGER: [
-        "VIEW_PRODUCTS",
-        "VIEW_USERS",
+        
         "VIEW_ORDERS",
         "EDIT_ORDER_STATUS",
         "EDIT_ORDER_NOTE",
-        "VIEW_CATEGORIES",
-        "VIEW_MEDIA",
-        "CREATE_MEDIA",
-        "EDIT_MEDIA",
-        "DELETE_MEDIA",
+        
     ],
+    
 
     CUSTOMER: [],
     GUEST: [],

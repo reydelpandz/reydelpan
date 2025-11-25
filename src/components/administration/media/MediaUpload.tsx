@@ -30,13 +30,14 @@ const MediaUpload = () => {
 
         try {
             const result = await uploadMedia(formData);
-
+            
             if (result.success) {
                 toast.success(result.message);
                 setSelectedFiles([]);
                 if (fileInputRef.current) {
                     fileInputRef.current.value = "";
                 }
+                location.reload();
             } else {
                 toast.error(result.error);
             }

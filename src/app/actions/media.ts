@@ -6,6 +6,7 @@ import { revalidatePath } from "next/cache";
 import { getServerSession } from "@/lib/session";
 import { hasPermission } from "@/lib/permissions";
 import { Role } from "@/generated/prisma";
+import { getMediaDirectory } from "@/lib/media";
 
 export async function uploadMedia(formData: FormData) {
     try {
@@ -20,7 +21,7 @@ export async function uploadMedia(formData: FormData) {
             return { success: false, error: "No files provided" };
         }
 
-        const mediaDir = path.join(process.cwd(), "public", "media");
+        const mediaDir = getMediaDirectory();
         await fs.mkdir(mediaDir, { recursive: true });
 
         const uploadedFiles: string[] = [];
@@ -58,9 +59,6 @@ export async function uploadMedia(formData: FormData) {
             uploadedFiles.push(uniqueFilename);
         }
 
-        // Revalidate the media page to show new uploads
-        revalidatePath("/admin/media");
-
         return {
             success: true,
             files: uploadedFiles,
@@ -85,7 +83,7 @@ export async function deleteMedia(filename: string) {
             return { success: false, message: "Unauthorized" };
         }
 
-        const mediaDir = path.join(process.cwd(), "public", "media");
+        const mediaDir = getMediaDirectory();
         const filepath = path.join(mediaDir, filename);
 
         await fs.unlink(filepath);

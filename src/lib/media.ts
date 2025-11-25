@@ -8,8 +8,14 @@ export interface MediaFile {
     createdAt: Date;
 }
 
+export function getMediaDirectory() {
+    return process.env.NODE_ENV === "production"
+        ? path.join("/app/media")
+        : path.join(process.cwd(), "public", "media");
+}
+
 export async function getMediaFiles(): Promise<MediaFile[]> {
-    const mediaDir = path.join(process.cwd(), "public", "media");
+    const mediaDir = getMediaDirectory();
 
     try {
         // Ensure directory exists
