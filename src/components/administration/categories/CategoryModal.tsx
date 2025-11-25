@@ -87,7 +87,7 @@ const CategoryModal = ({ mediaFiles }: { mediaFiles: MediaFile[] }) => {
         if (isEditMode && selectedCategory) {
             form.setValue("label", selectedCategory.label);
             form.setValue("priority", selectedCategory.priority);
-            form.setValue("image", selectedCategory.image);
+            form.setValue("image", selectedCategory.image ?? undefined);
         } else {
             form.reset({
                 label: "",
