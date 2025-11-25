@@ -40,14 +40,7 @@ export type Permission = (typeof PERMISSIONS)[number] | "*";
 export const permissions: Record<Role | "GUEST", Permission[]> = {
     ADMIN: ["*"],
 
-    MANAGER: [
-        
-        "VIEW_ORDERS",
-        "EDIT_ORDER_STATUS",
-        "EDIT_ORDER_NOTE",
-        
-    ],
-    
+    MANAGER: ["VIEW_ORDERS", "EDIT_ORDER_STATUS", "EDIT_ORDER_NOTE"],
 
     CUSTOMER: [],
     GUEST: [],

@@ -109,8 +109,11 @@ const Header = () => {
                                     </div>
                                 </nav>
                                 <div className="p-4 border-t mt-auto">
-                                    <p className="text-sm text-muted-foreground text-center">
-                                        © {new Date().getFullYear()} Your Brand
+                                    <p
+                                        className="text-sm text-muted-foreground text-center"
+                                        dir="ltr"
+                                    >
+                                        © {new Date().getFullYear()} Rey del Pan
                                     </p>
                                 </div>
                             </div>
