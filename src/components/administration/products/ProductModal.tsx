@@ -396,7 +396,7 @@ const ProductModal = ({
                                     <FormLabel>Images</FormLabel>
                                     <ImageSelector
                                         mediaFiles={mediaFiles}
-                                        images={field.value}
+                                        images={field.value ?? []}
                                         setImages={(newImages) =>
                                             form.setValue("images", newImages)
                                         }
