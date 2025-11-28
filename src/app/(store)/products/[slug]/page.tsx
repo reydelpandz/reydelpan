@@ -8,7 +8,7 @@ import { redirect } from "next/navigation";
 import AddToCart from "@/components/products/AddToCart";
 import { prisma } from "@/lib/db";
 import ProductsCarousel from "@/components/products/ProductsCarousel";
-import { RiStarFill, RiTruckLine } from "@remixicon/react";
+import { RiTruckLine } from "@remixicon/react";
 
 const ProductPage = async ({
     params,
@@ -78,19 +78,7 @@ const ProductPage = async ({
                                     )
                                 )}
                             </div>
-                            <div className="flex items-center gap-2 mb-4">
-                                <div className="flex items-center">
-                                    {[1, 2, 3, 4, 5].map((star) => (
-                                        <RiStarFill
-                                            key={star}
-                                            className="h-4 w-4 fill-yellow-400 text-yellow-400"
-                                        />
-                                    ))}
-                                </div>
-                                <span className="text-sm text-muted-foreground">
-                                    (0 تقييمات)
-                                </span>
-                            </div>
+
                             <div className="flex items-center gap-3 mb-4">
                                 {/* Replace the price section with this updated version */}
                                 <div className="flex items-center gap-3 mb-4">

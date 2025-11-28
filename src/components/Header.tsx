@@ -81,7 +81,7 @@ const Header = () => {
                                 className="text-foreground p-2 focus:outline-none"
                                 aria-label="Toggle menu"
                             >
-                                <RiMenu2Line className="size-6" />
+                                <RiMenu2Line className="size-6 rotate-180" />
                             </button>
                         </SheetTrigger>
                         <SheetContent
@@ -109,7 +109,9 @@ const Header = () => {
                                                 transition={{
                                                     duration: 0.4,
                                                     delay: index * 0.1,
-                                                    ease: [0.25, 0.46, 0.45, 0.94],
+                                                    ease: [
+                                                        0.25, 0.46, 0.45, 0.94,
+                                                    ],
                                                 }}
                                             >
                                                 <Link
