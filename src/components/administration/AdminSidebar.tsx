@@ -16,8 +16,10 @@ import {
     SidebarMenu,
     SidebarMenuButton,
     SidebarMenuItem,
+    useSidebar,
 } from "@/components/ui/sidebar";
 import Link from "next/link";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const items = [
     // {
@@ -53,6 +55,8 @@ const items = [
 ];
 
 const Sidebar = () => {
+    const { toggleSidebar } = useSidebar();
+    const isMobile = useIsMobile();
     return (
         <Sidepanel>
             <SidebarContent>
@@ -63,7 +67,12 @@ const Sidebar = () => {
                             {items.map((item) => (
                                 <SidebarMenuItem key={item.title}>
                                     <SidebarMenuButton asChild>
-                                        <Link href={item.url}>
+                                        <Link
+                                            onClick={() => {
+                                                if (isMobile) toggleSidebar();
+                                            }}
+                                            href={item.url}
+                                        >
                                             <item.icon />
                                             <span>{item.title}</span>
                                         </Link>

@@ -34,7 +34,7 @@ const OrdersPage = async ({
     if (status) {
         whereClause.status = status;
     } else {
-        whereClause.status = { not: "DELIVERED" };
+        whereClause.status = { not: "SHIPPING" as OrderStatus };
     }
 
     if (query && searchType) {

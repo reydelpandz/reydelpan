@@ -2,19 +2,21 @@
 
 import { RiHome2Line } from "@remixicon/react";
 import { SidebarTrigger } from "../ui/sidebar";
-
 import Link from "next/link";
 import { Button, buttonVariants } from "../ui/button";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { revokeSessions } from "@/lib/auth-client";
 
 const AdminHeader = () => {
     const router = useRouter();
     const { mutate: handleSignOut, isPending } = useMutation({
-        mutationFn: undefined,
+        mutationFn: async () => {
+            await revokeSessions();
+        },
         onSuccess() {
-            router.refresh();
+            router.replace("/");
         },
         onError(error) {
             toast.error(error.message);

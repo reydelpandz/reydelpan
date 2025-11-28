@@ -20,6 +20,12 @@ export default function Checkout() {
         }
     }, [isMounted(), isEmpty]);
 
+    useEffect(() => {
+        if (showThankYou) {
+            window.scrollTo(0, 0);
+        }
+    }, [showThankYou]);
+
     if (showThankYou) {
         return <ThankYou />;
     }

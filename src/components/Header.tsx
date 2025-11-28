@@ -91,11 +91,11 @@ const Header = () => {
                                 Mobile Navbar
                             </SheetTitle>
                             <div className="flex flex-col h-full">
-                                <div className="p-4 border-b">
+                                <div className="p-4 border-b flex justify-center">
                                     <Logo />
                                 </div>
                                 <nav className="flex-1 overflow-auto py-6 px-4">
-                                    <div className="flex flex-col space-y-5">
+                                    <div className="flex flex-col text-right space-y-5">
                                         {navItems.map((item) => (
                                             <Link
                                                 key={item.href}
@@ -113,7 +113,8 @@ const Header = () => {
                                         className="text-sm text-muted-foreground text-center"
                                         dir="ltr"
                                     >
-                                        © {new Date().getFullYear()} Rey del Pan
+                                        © {`2018-${new Date().getFullYear()}`}{" "}
+                                        Rey del Pan
                                     </p>
                                 </div>
                             </div>

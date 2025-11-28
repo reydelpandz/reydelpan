@@ -35,22 +35,7 @@ export default function OrderStatusChanger() {
     const [selectedStatus, setSelectedStatus] = useState<
         OrderStatus | undefined
     >(order?.status);
-    const statuses: OrderStatus[] = [
-        "PENDING",
-        "FAILED_01",
-        "FAILED_02",
-        "FAILED_03",
-        "FAILED_04",
-        "FAILED_05",
-        "DUPLICATE",
-        "WRONG_NUMBER",
-        "WRONG_ORDER",
-        "TO_BE_CONFIRMED",
-        "OUT_OF_STOCK",
-        "SHIPPING",
-        "DELIVERED",
-        "CANCELED",
-    ];
+    const statuses: OrderStatus[] = ["PENDING", "SHIPPING"];
 
     const { isPending, mutate } = useMutation({
         mutationFn: async () => {

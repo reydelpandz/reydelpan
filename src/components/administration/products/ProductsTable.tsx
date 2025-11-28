@@ -15,9 +15,8 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { Product } from "@/generated/prisma";
-import { RiBarChart2Line } from "@remixicon/react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Pagination } from "@/components/ui/pagination";
 import NoResults from "../NoResults";
@@ -100,16 +99,6 @@ const ProductsTable = ({
                             <TableCell>{product.quantity}</TableCell>
                             <TableCell>
                                 <div className="flex gap-2 items-center">
-                                    <Link
-                                        href={`/administration/products/${product.id}/stats`}
-                                        prefetch={false}
-                                        className={buttonVariants({
-                                            variant: "ghost",
-                                            size: "icon",
-                                        })}
-                                    >
-                                        <RiBarChart2Line className="h-4 w-4 text-green-500" />
-                                    </Link>
                                     <Button
                                         variant="ghost"
                                         size="icon"

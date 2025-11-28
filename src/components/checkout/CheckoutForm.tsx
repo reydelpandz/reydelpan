@@ -37,6 +37,9 @@ import { useCart } from "@/hooks/use-cart";
 import { RiTruckLine } from "@remixicon/react";
 import { Textarea } from "../ui/textarea";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
+import { formatPrice } from "@/lib/utils";
+import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
+import { stopDesks } from "@/data/stop-desks";
 
 const formSchema = z.object({
     fullName: z.string().min(3, {
@@ -94,7 +97,8 @@ export default function CheckoutForm({ showThankYou }: CheckoutFormProps) {
                 setSelectedWilaya(wilaya);
                 setCommunes(selectedWilayaData.communes);
                 setIsDeliverableToStopDesk(
-                    selectedWilayaData.deliveryFees["stop-desk"] > 0
+                    // selectedWilayaData.deliveryFees["stop-desk"] > 0
+                    stopDesks.some((sd) => sd.wilayaName === wilaya)
                 );
                 form.setValue("commune", "");
                 setShippingFee(null);
@@ -306,7 +310,7 @@ export default function CheckoutForm({ showThankYou }: CheckoutFormProps) {
                                                     isEnabled: true,
                                                 },
                                                 {
-                                                    label: "(Flash Delivery) التوصيل لمكتب البريد",
+                                                    label: "التوصيل لمكتب البريد",
                                                     value: "stop-desk",
                                                     isEnabled:
                                                         isDeliverableToStopDesk,
@@ -326,7 +330,18 @@ export default function CheckoutForm({ showThankYou }: CheckoutFormProps) {
                                                             />
                                                         </FormControl>
                                                         <FormLabel className="font-normal">
-                                                            {method.label}
+                                                            {method.label}{" "}
+                                                            {!!shippingFee &&
+                                                                deliveryMethod ===
+                                                                    method.value && (
+                                                                    <span>
+                                                                        (
+                                                                        {formatPrice(
+                                                                            shippingFee
+                                                                        )}
+                                                                        )
+                                                                    </span>
+                                                                )}
                                                         </FormLabel>
                                                     </FormItem>
                                                 ))}
@@ -336,6 +351,43 @@ export default function CheckoutForm({ showThankYou }: CheckoutFormProps) {
                                 </FormItem>
                             )}
                         />
+
+                        {!isDeliverableToStopDesk && (
+                            <Alert>
+                                <AlertDescription>
+                                    التوصيل لمكتب البريد غير متوفر لولايتك.
+                                </AlertDescription>
+                            </Alert>
+                        )}
+
+                        {deliveryMethod === "stop-desk" && wilaya && (
+                            <Alert>
+                                <AlertTitle>مكاتب التوصيل</AlertTitle>
+                                <AlertDescription>
+                                    <ul
+                                        className="flex flex-col gap-1.5 list-inside list-disc"
+                                        dir="ltr"
+                                    >
+                                        {stopDesks
+                                            .find(
+                                                (sd) => sd.wilayaName === wilaya
+                                            )
+                                            ?.addresses.map((address) => (
+                                                <li>{address}</li>
+                                            ))}
+                                    </ul>
+                                </AlertDescription>
+                            </Alert>
+                        )}
+
+                        <Alert variant="destructive">
+                            <AlertTitle>تنبيه</AlertTitle>
+                            <AlertDescription>
+                                إذا تجاوز وزن الطلبية 5 كغ، يتم احتساب 50 دج
+                                إضافية عن كل كيلوغرام زائد، وهذا من طرف شركة
+                                التوصيل.
+                            </AlertDescription>
+                        </Alert>
 
                         <FormField
                             control={form.control}

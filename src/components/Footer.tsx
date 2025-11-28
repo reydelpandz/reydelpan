@@ -85,7 +85,8 @@ const Footer = () => {
                     </div>
                     <div className="flex flex-col md:flex-row justify-between border-t border-neutral-300 dark:border-neutral-200 py-8 gap-4">
                         <p className="text-sm text-neutral-500 text-center md:text-right">
-                            جميع الحقوق محفوظة © {currentYear} Rey del Pan
+                            جميع الحقوق محفوظة © {`${currentYear}-2018`} Rey del
+                            Pan
                         </p>
                         <div className="flex gap-2.5 items-center justify-center md:justify-start">
                             {socials.map((social) => (
