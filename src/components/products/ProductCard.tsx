@@ -59,11 +59,17 @@ export default function ProductCard({ product }: ProductCardProps) {
                         </Badge>
                     )}
                 </div>
-                <CardContent className="px-1.5 py-2 sm:px-4 sm:py-3">
-                    <div className="flex gap-1 justify-between items-start sm:gap-2">
-                        <h3 className="font-semibold line-clamp-1 text-sm leading-tight sm:text-sm md:text-base lg:text-lg">
-                            {product.name}
-                        </h3>
+                <CardContent className="px-1.5 text-right sm:px-4 sm:pt-3">
+                    <h3 className="font-semibold line-clamp-1 text-center text-sm leading-tight sm:text-sm md:text-base lg:text-lg">
+                        {product.name}
+                    </h3>
+
+                    <p className="text-xs text-muted-foreground text-right line-clamp-2 mt-1 leading-tight sm:text-sm sm:mt-2">
+                        {product.shortDescription}
+                    </p>
+                </CardContent>
+                <CardFooter className="p-2 pb-0 pt-0 flex flex-col gap-2 sm:p-4 sm:pt-0 mt-auto">
+                    <div className="text-center">
                         {hasDiscount ? (
                             <div className="flex flex-col items-end gap-0 min-w-fit sm:items-center sm:gap-1.5">
                                 <span className="font-semibold text-xs whitespace-nowrap sm:text-sm md:text-base">
@@ -81,11 +87,6 @@ export default function ProductCard({ product }: ProductCardProps) {
                             </span>
                         )}
                     </div>
-                    <p className="text-xs text-muted-foreground line-clamp-2 mt-1 leading-tight sm:text-sm sm:mt-2">
-                        {product.shortDescription}
-                    </p>
-                </CardContent>
-                <CardFooter className="p-2 pb-0 pt-0 sm:p-4 sm:pt-0 mt-auto">
                     <Button
                         variant={inCart(product.id) ? "destructive" : "default"}
                         className="w-full h-8 text-[10px] px-2 sm:h-9 sm:text-xs md:h-10 md:text-sm"

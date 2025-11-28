@@ -119,7 +119,7 @@ export default function CheckoutForm({ showThankYou }: CheckoutFormProps) {
     async function handleSubmit(values: z.infer<typeof formSchema>) {
         try {
             const orderData = {
-                customerAddress: values.address,
+                customerAddress: "لم يتم ذكر العنوان",
                 customerFullName: values.fullName,
                 customerPhone: values.phoneNumber,
                 customerWilaya: values.wilaya,
@@ -193,26 +193,6 @@ export default function CheckoutForm({ showThankYou }: CheckoutFormProps) {
                                     <FormControl>
                                         <Input
                                             placeholder="0XXXXXXXXX"
-                                            {...field}
-                                            className="h-10"
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-
-                        <FormField
-                            control={form.control}
-                            name="address"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel className="required">
-                                        العنوان
-                                    </FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            placeholder="العنوان التفصيلي"
                                             {...field}
                                             className="h-10"
                                         />
@@ -310,7 +290,7 @@ export default function CheckoutForm({ showThankYou }: CheckoutFormProps) {
                                                     isEnabled: true,
                                                 },
                                                 {
-                                                    label: "التوصيل لمكتب البريد",
+                                                    label: "التوصيل للمكتب ",
                                                     value: "stop-desk",
                                                     isEnabled:
                                                         isDeliverableToStopDesk,
@@ -376,6 +356,10 @@ export default function CheckoutForm({ showThankYou }: CheckoutFormProps) {
                                                 <li>{address}</li>
                                             ))}
                                     </ul>
+                                    <p className="text-destructive text-sm">
+                                        يرجى التأكد من أن مكتب التوصيل قريب بما
+                                        يكفي منك.
+                                    </p>
                                 </AlertDescription>
                             </Alert>
                         )}
@@ -389,23 +373,6 @@ export default function CheckoutForm({ showThankYou }: CheckoutFormProps) {
                             </AlertDescription>
                         </Alert>
 
-                        <FormField
-                            control={form.control}
-                            name="note"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>الملاحظة</FormLabel>
-                                    <FormControl>
-                                        <Textarea
-                                            className="min-h-24"
-                                            placeholder="..."
-                                            {...field}
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
                         <Button
                             disabled={isEmpty}
                             isLoading={form.formState.isSubmitting}

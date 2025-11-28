@@ -106,7 +106,7 @@ const CartContextProvider = ({ children }: { children: React.ReactNode }) => {
                 selectedValues: selectedValues,
             },
         ]);
-        toast.success("تم إضافة المنتج إلى السلة");
+       
         setSignalCart(true);
     };
 

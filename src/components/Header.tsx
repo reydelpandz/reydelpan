@@ -16,6 +16,7 @@ import { cn } from "@/lib/utils";
 import { useSession } from "@/lib/auth-client";
 import { Role } from "@/generated/prisma";
 import { hasPermission } from "@/lib/permissions";
+import { motion } from "motion/react";
 
 const Header = () => {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -45,7 +46,7 @@ const Header = () => {
                 pathname !== "/" && "mb-8"
             )}
         >
-            <div className="container flex justify-between items-center mx-auto h-full">
+            <div className="container flex justify-between items-center mx-auto h-full max-md:flex-row-reverse">
                 <Link href="/" className="flex items-center">
                     <Logo />
                 </Link>
@@ -96,15 +97,29 @@ const Header = () => {
                                 </div>
                                 <nav className="flex-1 overflow-auto py-6 px-4">
                                     <div className="flex flex-col text-right space-y-5">
-                                        {navItems.map((item) => (
-                                            <Link
+                                        {navItems.map((item, index) => (
+                                            <motion.div
                                                 key={item.href}
-                                                href={item.href}
-                                                onClick={handleLinkClick}
-                                                className="text-foreground hover:text-primary transition-colors py-2 text-lg font-medium"
+                                                initial={{ opacity: 0, x: 50 }}
+                                                animate={
+                                                    isMobileMenuOpen
+                                                        ? { opacity: 1, x: 0 }
+                                                        : { opacity: 0, x: 50 }
+                                                }
+                                                transition={{
+                                                    duration: 0.4,
+                                                    delay: index * 0.1,
+                                                    ease: [0.25, 0.46, 0.45, 0.94],
+                                                }}
                                             >
-                                                {item.label}
-                                            </Link>
+                                                <Link
+                                                    href={item.href}
+                                                    onClick={handleLinkClick}
+                                                    className="text-foreground hover:text-primary transition-colors py-2 text-lg font-medium block"
+                                                >
+                                                    {item.label}
+                                                </Link>
+                                            </motion.div>
                                         ))}
                                     </div>
                                 </nav>

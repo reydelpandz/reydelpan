@@ -40,10 +40,9 @@ export const HeroBanners = () => {
                                 transition={{ duration: 0.8, delay: 0.25 }}
                                 className="text-lg sm:text-xl max-w-4xl font-medium mx-auto mb-8"
                             >
-                                استمتع بمخبوزات Rey del Pan الصحية والطازجة،
-                                المصنوعة من مكونات طبيعية وبأعلى معايير الجودة،
-                                لنقدم لك نكهة أصيلة وتجربة غذائية متوازنة كل
-                                يوم.
+                                استمتع بمخبوزات Rey del Pan الصحية والطازجة
+                                المصنوعة من مكونات طبيعية وبأعلى معايير الجودة
+                                لنقدم لك نكهة أصيلة وتجربة غذائية متوازنة كل يوم
                             </motion.p>
                             <motion.div
                                 initial={{ opacity: 0, y: 20 }}

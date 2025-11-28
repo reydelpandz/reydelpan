@@ -25,7 +25,7 @@ const OurLocations = () => {
     return (
         <section className="py-12 px-4">
             <h2 className="font-bold text-3xl md:text-5xl mb-8 text-center">
-                تعالوا زورونا
+                نتشرف بزيارتكم و نسعد بخدمتكم
             </h2>
 
             <Tabs
