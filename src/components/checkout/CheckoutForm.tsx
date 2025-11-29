@@ -49,9 +49,9 @@ const formSchema = z.object({
     phoneNumber: z.string().min(10, {
         message: "رقم الهاتف يجب أن يحتوي على الأقل على 10 أرقام.",
     }),
-    address: z.string().min(5, {
-        message: "العنوان يجب أن يحتوي على الأقل على 5 أحرف.",
-    }),
+    // address: z.string().min(5, {
+    //     message: "العنوان يجب أن يحتوي على الأقل على 5 أحرف.",
+    // }),
     wilaya: z.string({}),
     commune: z.string({}),
     deliveryMethod: z.enum(["home", "stop-desk"]),
@@ -78,7 +78,7 @@ export default function CheckoutForm({ showThankYou }: CheckoutFormProps) {
         defaultValues: {
             fullName: "",
             phoneNumber: "",
-            address: "",
+            // address: "",
             wilaya: "",
             commune: "",
             deliveryMethod: "home",

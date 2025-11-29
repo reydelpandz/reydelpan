@@ -80,7 +80,6 @@ const ProductPage = async ({
                             </div>
 
                             <div className="flex items-center gap-3 mb-4">
-                                {/* Replace the price section with this updated version */}
                                 <div className="flex items-center gap-3 mb-4">
                                     {hasDiscount ? (
                                         <div className="flex items-center gap-3">

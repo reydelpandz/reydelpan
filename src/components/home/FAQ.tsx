@@ -56,10 +56,10 @@ const FAQ = () => {
                         }}
                     >
                         <AccordionItem value={qa.question}>
-                            <AccordionTrigger className="font-bold text-base p-4 py-4 bg-card text-card-foreground border-1 border-primary">
+                            <AccordionTrigger className="font-bold text-base p-4 py-4 bg-card text-card-foreground border border-primary">
                                 {qa.question}
                             </AccordionTrigger>
-                            <AccordionContent className="flex text-base bg-card text-card-foreground border-primary border-1 flex-col gap-4 text-balance">
+                            <AccordionContent className="flex text-base bg-card text-card-foreground border-primary border flex-col gap-4 text-balance">
                                 {qa.answer}
                             </AccordionContent>
                         </AccordionItem>
