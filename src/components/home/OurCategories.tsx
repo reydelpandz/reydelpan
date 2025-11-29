@@ -10,7 +10,7 @@ interface OurCategoriesProps {
 
 const OurCategories = ({ categories }: OurCategoriesProps) => {
     return (
-        <section id="categories">
+        <section id="categories" className="overflow-x-hidden">
             <motion.h2
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
