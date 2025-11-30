@@ -36,7 +36,7 @@ const ThankYou = () => {
                         <p className="text-muted-foreground leading-relaxed">
                             سيتم الإتصال بك بهذا الرقم{" "}
                             <span className="text-primary font-semibold">
-                                0675299503
+                                0664578369
                             </span>{" "}
                             لتأكيد طلبك في الساعات القليلة القادمة.
                         </p>
@@ -59,10 +59,10 @@ const ThankYou = () => {
 
                     <div className="space-y-2 pt-2">
                         <p className="text-2xl font-bold text-foreground tracking-wide">
-                            0675299503
+                            06 64 57 83 69
                         </p>
                         <p className="text-primary font-semibold">
-                            السبت .. الخميس / 9 صباحاً .. 8 مساءً
+                            السبت .. الخميس / 9 صباحاً .. 6 مساءً
                         </p>
                     </div>
                 </CardContent>
