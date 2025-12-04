@@ -63,7 +63,7 @@ const UsersTable = ({ users, currentPage, totalPages }: UsersTableProps) => {
                             </TableCell>
                             <TableCell>{user.role}</TableCell>
                             <TableCell>
-                                {format(user.createdAt, "dd/mm/yyyy")}
+                                {format(user.createdAt, "dd/MM/yyyy")}
                             </TableCell>
 
                             <TableCell>
