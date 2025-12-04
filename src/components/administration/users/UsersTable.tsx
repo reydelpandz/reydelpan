@@ -13,6 +13,10 @@ import { format } from "date-fns";
 import { Pagination } from "@/components/ui/pagination";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import NoResults from "../NoResults";
+import { Button } from "@/components/ui/button";
+import { RiPencilLine } from "@remixicon/react";
+import { useModal } from "@/hooks/use-modal";
+import { Trash2 } from "lucide-react";
 
 interface UsersTableProps {
     users: User[];
@@ -24,6 +28,7 @@ const UsersTable = ({ users, currentPage, totalPages }: UsersTableProps) => {
     const router = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();
+    const { toggle } = useModal();
 
     const handlePageChange = (page: number) => {
         const params = new URLSearchParams(searchParams);
@@ -44,6 +49,7 @@ const UsersTable = ({ users, currentPage, totalPages }: UsersTableProps) => {
                         <TableHead>Email</TableHead>
                         <TableHead>Role</TableHead>
                         <TableHead>Created At</TableHead>
+                        <TableHead>Actions</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -58,6 +64,28 @@ const UsersTable = ({ users, currentPage, totalPages }: UsersTableProps) => {
                             </TableCell>
                             <TableCell className="font-medium">
                                 {format(user.createdAt, "dd/mm/yyyy")}
+                            </TableCell>
+
+                            <TableCell>
+                                <div className="grid grid-cols-2 gap-1 items-center">
+                                    <Button
+                                        onClick={() => toggle("user", user)}
+                                        variant="ghost"
+                                        size="icon"
+                                    >
+                                        <RiPencilLine className="size-5 text-blue-500" />
+                                    </Button>
+
+                                    <Button
+                                        variant="ghost"
+                                        size="icon"
+                                        onClick={() =>
+                                            toggle("deleteUser", user)
+                                        }
+                                    >
+                                        <Trash2 className="h-4 w-4 text-red-500" />
+                                    </Button>
+                                </div>
                             </TableCell>
                         </TableRow>
                     ))}

@@ -54,7 +54,7 @@ const Footer = () => {
     return (
         <>
             <ContactModal />
-            <footer className="mt-16">
+            <footer className="mt-16 bg-primary/5">
                 <div className="mx-auto container">
                     <div className="flex flex-col items-center py-8 border-b border-neutral-300 dark:border-neutral-200">
                         <Logo className="mb-4" />

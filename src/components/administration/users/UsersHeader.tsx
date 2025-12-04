@@ -11,9 +11,9 @@ const UsersHeader = () => {
         <div className="flex items-center justify-between py-4">
             <div></div>
 
-            <Button onClick={() => toggle("user")}>
+            {/* <Button onClick={() => toggle("user")}>
                 <RiAddLine className="size-6" />
-            </Button>
+            </Button> */}
         </div>
     );
 };

@@ -50,7 +50,7 @@ const CartContextProvider = ({ children }: { children: React.ReactNode }) => {
 
     useEffect(close, [pathname]);
 
-    const [cartItems, setCartItems] = useLocalStorageState("khottwah-cart", {
+    const [cartItems, setCartItems] = useLocalStorageState("reydelpan-cart", {
         defaultValue: [] as CartItem[],
     });
 
@@ -106,7 +106,7 @@ const CartContextProvider = ({ children }: { children: React.ReactNode }) => {
                 selectedValues: selectedValues,
             },
         ]);
-       
+
         setSignalCart(true);
     };
 

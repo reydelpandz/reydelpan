@@ -1,3 +1,5 @@
+import DeleteUserModal from "@/components/administration/users/DeleteUserModal";
+import UserModal from "@/components/administration/users/UserModal";
 import UsersHeader from "@/components/administration/users/UsersHeader";
 import UsersTable from "@/components/administration/users/UsersTable";
 import { Role } from "@/generated/prisma";
@@ -34,6 +36,8 @@ const UsersPage = async ({
     const totalPages = Math.ceil(totalUsers / pageSize);
     return (
         <>
+            <UserModal />
+            <DeleteUserModal />
             <h1 className="page-title">Users</h1>
             <div className="container mx-auto px-4 py-2">
                 <UsersHeader />

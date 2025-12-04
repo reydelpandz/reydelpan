@@ -11,6 +11,7 @@ const initialModalState = {
     orderStatusChanger: false,
     orderNote: false,
     deleteOrder: false,
+    deleteUser: false,
     deleteMedia: false,
 };
 

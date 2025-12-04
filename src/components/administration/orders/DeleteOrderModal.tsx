@@ -10,15 +10,10 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-
 import { useMutation } from "@tanstack/react-query";
-
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useModal } from "@/hooks/use-modal";
-import { useEffect, useState } from "react";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import axios from "axios";
 import { Order } from "@/generated/prisma";
 
@@ -29,7 +24,6 @@ const DeleteOrderModal = () => {
         toggle,
         actionData: selectedOrder,
     } = useModal<Order | null>();
-    const [confirmationText, setConfirmationText] = useState("");
 
     const { isPending, mutate: handleDelete } = useMutation({
         mutationFn: async () => {
@@ -46,21 +40,11 @@ const DeleteOrderModal = () => {
         },
     });
 
-    const isDeleteConfirmed =
-        confirmationText.toLowerCase() === "delete this order";
-
-    useEffect(() => {
-        if (!isOpen("deleteOrder")) {
-            setConfirmationText("");
-        }
-    }, [isOpen("deleteOrder")]);
-
     return (
         <AlertDialog
             open={isOpen("deleteOrder")}
             onOpenChange={() => {
                 toggle("deleteOrder");
-                setConfirmationText("");
             }}
         >
             <AlertDialogContent>
@@ -73,25 +57,12 @@ const DeleteOrderModal = () => {
                         delete this order.
                     </AlertDialogDescription>
                 </AlertDialogHeader>
-                <div className="space-y-3">
-                    <Label htmlFor="confirmation">
-                        To confirm, type delete this order below:
-                    </Label>
-                    <Input
-                        id="confirmation"
-                        type="text"
-                        placeholder="delete this order"
-                        value={confirmationText}
-                        onChange={(e) => setConfirmationText(e.target.value)}
-                    />
-                </div>
                 <AlertDialogFooter>
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
                     <Button
                         isLoading={isPending}
                         onClick={() => handleDelete()}
                         variant="destructive"
-                        disabled={!isDeleteConfirmed}
                     >
                         Continue
                     </Button>

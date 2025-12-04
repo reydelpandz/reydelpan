@@ -45,7 +45,7 @@ const Reviews = () => {
                 <Marquee className="pb-24">
                     {reviews.map((review) => (
                         <div
-                            className="bg-card border-primary overflow-visible relative border-1 rounded-md flex flex-col gap-4 items-center justify-start mx-8 h-80 w-96 p-7"
+                            className="bg-card border-primary overflow-visible relative border rounded-md flex flex-col gap-4 items-center justify-start mx-8 h-80 w-96 p-7"
                             dir="rtl"
                         >
                             <RiDoubleQuotesR className="size-16 text-primary" />

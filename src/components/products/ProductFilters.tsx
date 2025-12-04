@@ -1,6 +1,6 @@
 "use client";
 
-import { useSearchParams, useRouter, usePathname } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import {
     Select,
     SelectContent,
@@ -16,8 +16,6 @@ interface ProductFiltersProps {
 
 export default function ProductFilters({ allCategories }: ProductFiltersProps) {
     const searchParams = useSearchParams();
-    const router = useRouter();
-    const pathname = usePathname();
 
     // Get current values from URL params or set defaults
     const currentCategory = searchParams.get("category") || "";
@@ -42,7 +40,7 @@ export default function ProductFilters({ allCategories }: ProductFiltersProps) {
             params.delete(key);
         }
 
-        router.push(`${pathname}?${params.toString()}`, { scroll: false });
+        history.pushState(null, "", `?${params.toString()}`);
     };
 
     return (

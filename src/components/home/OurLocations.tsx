@@ -34,13 +34,11 @@ const OurLocations = () => {
             >
                 <TabsList className="grid w-full grid-cols-2 mb-6">
                     {locations.map((location) => (
-                        <TabsTrigger
-                            key={location.id}
-                            value={location.id}
-                            className="flex items-center gap-2 text-sm sm:text-base py-3"
-                        >
-                            <MapPin className="h-4 w-4" />
-                            <span>{location.name}</span>
+                        <TabsTrigger key={location.id} value={location.id}>
+                            <div className="flex gap-2 items-center">
+                                <MapPin className="size-4" />
+                                <span>{location.name}</span>
+                            </div>
                         </TabsTrigger>
                     ))}
                 </TabsList>

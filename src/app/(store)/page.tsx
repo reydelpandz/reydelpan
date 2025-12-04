@@ -8,18 +8,43 @@ import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 import FAQ from "@/components/home/FAQ";
 import OurCategories from "@/components/home/OurCategories";
+import Stats from "@/components/home/Stats";
 
 const Home = async () => {
-    const featuredProducts = await prisma.product.findMany({
-        where: { quantity: { gt: 0 } },
-        orderBy: [{ isFeatured: "desc" }, { createdAt: "desc" }],
-        take: 8,
-    });
+    const [
+        featuredProducts,
+        categories,
+        deliveredOrdersCount,
+        deliveredProductsData,
+    ] = await Promise.all([
+        prisma.product.findMany({
+            where: { quantity: { gt: 0 } },
+            orderBy: [{ isFeatured: "desc" }, { createdAt: "desc" }],
+            take: 8,
+        }),
 
-    const categories = await prisma.category.findMany({
-        orderBy: { priority: "desc" },
-        where: { priority: { gt: -1 } },
-    });
+        prisma.category.findMany({
+            orderBy: { priority: "desc" },
+            where: { priority: { gt: -1 } },
+        }),
+
+        prisma.order.count({
+            where: { status: "DELIVERED" },
+        }),
+
+        prisma.orderedProduct.aggregate({
+            where: {
+                order: {
+                    status: "DELIVERED",
+                },
+            },
+            _sum: {
+                quantity: true,
+            },
+        }),
+    ]);
+
+    const deliveredProductsCount = deliveredProductsData._sum.quantity || 0;
 
     return (
         <main className="home">
@@ -46,19 +71,26 @@ const Home = async () => {
                     </div>
                     <ProductsCarousel products={featuredProducts} />
                 </section>
-
                 <div className="w-full bg-primary/5">
-                    <Reviews />
+                    <Stats
+                        deliveredOrdersCount={deliveredOrdersCount}
+                        deliveredProductsCount={deliveredProductsCount}
+                    />
                 </div>
 
-                <FAQ />
+                <Reviews />
 
                 <div className="w-full bg-primary/5">
-                    <OurLocations />
+                    <FAQ />
                 </div>
+
+                <OurLocations />
             </div>
         </main>
     );
 };
 
 export default Home;
+
+// Every 8 hours
+export const revalidate = 28800;
