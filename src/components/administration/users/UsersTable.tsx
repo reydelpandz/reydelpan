@@ -49,7 +49,9 @@ const UsersTable = ({ users, currentPage, totalPages }: UsersTableProps) => {
                         <TableHead>Email</TableHead>
                         <TableHead>Role</TableHead>
                         <TableHead>Created At</TableHead>
-                        <TableHead>Actions</TableHead>
+                        <TableHead className="w-[100px] text-center">
+                            Actions
+                        </TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -59,10 +61,8 @@ const UsersTable = ({ users, currentPage, totalPages }: UsersTableProps) => {
                             <TableCell className="font-medium">
                                 {user.email}
                             </TableCell>
-                            <TableCell className="font-medium">
-                                {user.role}
-                            </TableCell>
-                            <TableCell className="font-medium">
+                            <TableCell>{user.role}</TableCell>
+                            <TableCell>
                                 {format(user.createdAt, "dd/mm/yyyy")}
                             </TableCell>
 
