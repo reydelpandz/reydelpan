@@ -45,7 +45,7 @@ export default function CheckoutSummary() {
                             key={product.id}
                             className="flex items-start space-x-4"
                         >
-                            <div className="h-20 w-20 rounded-md overflow-hidden bg-muted flex-shrink-0">
+                            <div className="h-20 w-20 rounded-md overflow-hidden bg-muted shrink-0">
                                 <img
                                     src={
                                         product.images[0] || "/placeholder.svg"
@@ -113,12 +113,15 @@ export default function CheckoutSummary() {
                         <span>المجموع الجزئي</span>
                         <span>{formatPrice(subTotal)}</span>
                     </div>
-                    {shippingFee !== null && (
-                        <div className="flex justify-between">
-                            <span>تكلفة الشحن</span>
-                            <span>{formatPrice(shippingFee)}</span>
-                        </div>
-                    )}
+
+                    <div className="flex justify-between">
+                        <span>تكلفة الشحن</span>
+                        <span>
+                            {shippingFee !== null
+                                ? formatPrice(shippingFee)
+                                : "(إختر المكان أولا)"}
+                        </span>
+                    </div>
 
                     <Separator />
                     <div className="flex justify-between font-medium text-lg">
