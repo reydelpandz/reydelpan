@@ -12,23 +12,11 @@ import {
 import { useModal } from "@/hooks/use-modal";
 import { User } from "@/generated/prisma";
 import Loader from "@/components/Loader";
-import {
-    Bar,
-    BarChart,
-    ResponsiveContainer,
-    Tooltip,
-    XAxis,
-    YAxis,
-} from "recharts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 type UserDetailsResponse = {
-    deliveredOrdersCount: number;
-    confirmedOrdersStats: {
-        month: string;
-        year: string;
-        count: number;
-    }[];
+    thisMonthDeliveredCount: number;
+    previousMonthsDeliveredCount: number;
 };
 
 export function UserDetailsModal() {
@@ -67,88 +55,32 @@ export function UserDetailsModal() {
                             <Loader />
                         </div>
                     ) : stats ? (
-                        <>
-                            <div className="grid grid-cols-2 gap-4">
-                                <Card>
-                                    <CardHeader className="pb-2">
-                                        <CardTitle className="text-sm font-medium">
-                                            Total Delivered
-                                        </CardTitle>
-                                    </CardHeader>
-                                    <CardContent>
-                                        <div className="text-2xl font-bold">
-                                            {stats.deliveredOrdersCount}
-                                        </div>
-                                    </CardContent>
-                                </Card>
-                                <Card>
-                                    <CardHeader className="pb-2">
-                                        <CardTitle className="text-sm font-medium">
-                                            Confirmed (Last 3 Mo)
-                                        </CardTitle>
-                                    </CardHeader>
-                                    <CardContent>
-                                        <div className="text-2xl font-bold">
-                                            {stats.confirmedOrdersStats.reduce(
-                                                (acc, curr) => acc + curr.count,
-                                                0
-                                            )}
-                                        </div>
-                                    </CardContent>
-                                </Card>
-                            </div>
-
+                        <div className="grid grid-cols-2 gap-4">
                             <Card>
-                                <CardHeader>
-                                    <CardTitle>
-                                        Confirmed Orders Trend
+                                <CardHeader className="pb-2">
+                                    <CardTitle className="text-sm font-medium">
+                                        This Month Delivered
                                     </CardTitle>
                                 </CardHeader>
-                                <CardContent className="pl-2">
-                                    <div className="h-[200px] w-full">
-                                        <ResponsiveContainer
-                                            width="100%"
-                                            height="100%"
-                                        >
-                                            <BarChart
-                                                data={
-                                                    stats.confirmedOrdersStats
-                                                }
-                                            >
-                                                <XAxis
-                                                    dataKey="month"
-                                                    stroke="#888888"
-                                                    fontSize={12}
-                                                    tickLine={false}
-                                                    axisLine={false}
-                                                />
-                                                <YAxis
-                                                    stroke="#888888"
-                                                    fontSize={12}
-                                                    tickLine={false}
-                                                    axisLine={false}
-                                                    allowDecimals={false}
-                                                />
-                                                <Tooltip
-                                                    cursor={{
-                                                        fill: "transparent",
-                                                    }}
-                                                    contentStyle={{
-                                                        borderRadius: "8px",
-                                                    }}
-                                                />
-                                                <Bar
-                                                    dataKey="count"
-                                                    fill="#3b82f6"
-                                                    radius={[4, 4, 0, 0]}
-                                                    name="Confirmed"
-                                                />
-                                            </BarChart>
-                                        </ResponsiveContainer>
+                                <CardContent>
+                                    <div className="text-2xl font-bold">
+                                        {stats.thisMonthDeliveredCount}
                                     </div>
                                 </CardContent>
                             </Card>
-                        </>
+                            <Card>
+                                <CardHeader className="pb-2">
+                                    <CardTitle className="text-sm font-medium">
+                                        Previous Months Delivered
+                                    </CardTitle>
+                                </CardHeader>
+                                <CardContent>
+                                    <div className="text-2xl font-bold">
+                                        {stats.previousMonthsDeliveredCount}
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        </div>
                     ) : (
                         <div className="text-center text-muted-foreground">
                             No data available.
