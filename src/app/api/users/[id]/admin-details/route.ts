@@ -23,9 +23,21 @@ export async function GET(
         const now = new Date();
         const startOfCurrentMonth = startOfMonth(now);
 
+        const user = await prisma.user.findUnique({
+            where: { id: userId },
+            select: { name: true },
+        });
+
+        if (!user) {
+            return Response.json(
+                { message: "User not found." },
+                { status: 404 }
+            );
+        }
+
         const thisMonthDeliveredCount = await prisma.order.count({
             where: {
-                confirmedBy: userId,
+                confirmedBy: user.name,
                 status: "DELIVERED",
                 confirmedAt: {
                     gte: startOfCurrentMonth,
@@ -35,7 +47,7 @@ export async function GET(
 
         const previousMonthsDeliveredCount = await prisma.order.count({
             where: {
-                confirmedBy: userId,
+                confirmedBy: user.name,
                 status: "DELIVERED",
                 confirmedAt: {
                     lt: startOfCurrentMonth,
