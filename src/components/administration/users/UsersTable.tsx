@@ -14,7 +14,7 @@ import { Pagination } from "@/components/ui/pagination";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import NoResults from "../NoResults";
 import { Button } from "@/components/ui/button";
-import { RiPencilLine } from "@remixicon/react";
+import { RiInformation2Line, RiPencilLine } from "@remixicon/react";
 import { useModal } from "@/hooks/use-modal";
 import { Trash2 } from "lucide-react";
 
@@ -68,6 +68,16 @@ const UsersTable = ({ users, currentPage, totalPages }: UsersTableProps) => {
 
                             <TableCell>
                                 <div className="grid grid-cols-2 gap-1 items-center">
+                                    <Button
+                                        onClick={() =>
+                                            toggle("userDetails", user)
+                                        }
+                                        variant="ghost"
+                                        size="icon"
+                                    >
+                                        <RiInformation2Line className="size-5 text-green-500" />
+                                    </Button>
+
                                     <Button
                                         onClick={() => toggle("user", user)}
                                         variant="ghost"

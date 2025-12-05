@@ -4,6 +4,7 @@ const initialModalState = {
     auth: false,
     product: false,
     user: false,
+    userDetails: false,
     deleteProduct: false,
     category: false,
     deleteCategory: false,

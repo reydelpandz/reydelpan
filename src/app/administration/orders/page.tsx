@@ -36,7 +36,7 @@ const OrdersPage = async ({
         whereClause.status = status;
     } else {
         if (!showAllOrders) {
-            whereClause.status = { not: "SHIPPING" as OrderStatus };
+            whereClause.status = { not: "DELIVERED" satisfies OrderStatus };
         }
     }
 

@@ -1,4 +1,5 @@
 import DeleteUserModal from "@/components/administration/users/DeleteUserModal";
+import UserDetailsModal from "@/components/administration/users/UserDetailsModal";
 import UserModal from "@/components/administration/users/UserModal";
 import UsersHeader from "@/components/administration/users/UsersHeader";
 import UsersTable from "@/components/administration/users/UsersTable";
@@ -36,6 +37,7 @@ const UsersPage = async ({
     const totalPages = Math.ceil(totalUsers / pageSize);
     return (
         <>
+            <UserDetailsModal />
             <UserModal />
             <DeleteUserModal />
             <h1 className="page-title">Users</h1>

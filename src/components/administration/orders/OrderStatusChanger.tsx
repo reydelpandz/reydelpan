@@ -35,7 +35,7 @@ export default function OrderStatusChanger() {
     const [selectedStatus, setSelectedStatus] = useState<
         OrderStatus | undefined
     >(order?.status);
-    const statuses: OrderStatus[] = ["PENDING", "SHIPPING"];
+    const statuses: OrderStatus[] = ["PENDING", "DELIVERED"];
 
     const { isPending, mutate } = useMutation({
         mutationFn: async () => {
