@@ -33,9 +33,7 @@ import {
 import axios, { isAxiosError } from "axios";
 import { toast } from "sonner";
 import { useCart } from "@/hooks/use-cart";
-
 import { RiTruckLine } from "@remixicon/react";
-import { Textarea } from "../ui/textarea";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { formatPrice } from "@/lib/utils";
 import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
@@ -53,7 +51,7 @@ const formSchema = z.object({
     //     message: "العنوان يجب أن يحتوي على الأقل على 5 أحرف.",
     // }),
     wilaya: z.string({}),
-    commune: z.string({}),
+    commune: z.string({}).optional(),
     deliveryMethod: z.enum(["home", "stop-desk"]),
     note: z.string().max(300).optional(),
 });
@@ -123,7 +121,10 @@ export default function CheckoutForm({ showThankYou }: CheckoutFormProps) {
                 customerFullName: values.fullName,
                 customerPhone: values.phoneNumber,
                 customerWilaya: values.wilaya,
-                customerCommune: values.commune,
+                customerCommune:
+                    deliveryMethod === "home"
+                        ? values.commune
+                        : "لم يتم ذكر البلدية",
                 deliveryMethod: values.deliveryMethod,
                 deliveryCost: shippingFee,
                 products: cartItems.map((product) => ({
@@ -235,39 +236,41 @@ export default function CheckoutForm({ showThankYou }: CheckoutFormProps) {
                             )}
                         />
 
-                        <FormField
-                            control={form.control}
-                            name="commune"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel className="required">
-                                        البلدية
-                                    </FormLabel>
-                                    <Select
-                                        onValueChange={field.onChange}
-                                        defaultValue={field.value}
-                                        disabled={!selectedWilaya}
-                                    >
-                                        <FormControl>
-                                            <SelectTrigger className="w-full">
-                                                <SelectValue placeholder="اختر البلدية" />
-                                            </SelectTrigger>
-                                        </FormControl>
-                                        <SelectContent>
-                                            {communes.map((commune) => (
-                                                <SelectItem
-                                                    key={commune}
-                                                    value={commune}
-                                                >
-                                                    {commune}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
+                        {deliveryMethod === "home" && (
+                            <FormField
+                                control={form.control}
+                                name="commune"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel className="required">
+                                            البلدية
+                                        </FormLabel>
+                                        <Select
+                                            onValueChange={field.onChange}
+                                            defaultValue={field.value}
+                                            disabled={!selectedWilaya}
+                                        >
+                                            <FormControl>
+                                                <SelectTrigger className="w-full">
+                                                    <SelectValue placeholder="اختر البلدية" />
+                                                </SelectTrigger>
+                                            </FormControl>
+                                            <SelectContent>
+                                                {communes.map((commune) => (
+                                                    <SelectItem
+                                                        key={commune}
+                                                        value={commune}
+                                                    >
+                                                        {commune}
+                                                    </SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        )}
 
                         <FormField
                             control={form.control}

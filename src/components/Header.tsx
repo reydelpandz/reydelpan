@@ -32,7 +32,7 @@ const Header = () => {
         { href: "/", label: "الرئيسية" },
         { href: "/products", label: "المتجر" },
         { href: "/#about", label: "من نحن" },
-        { href: "/#faq", label: "الإستفسارات" },
+        // { href: "/#faq", label: "الإستفسارات" },
     ];
 
     if (hasPermission(role, "VIEW_ORDERS")) {

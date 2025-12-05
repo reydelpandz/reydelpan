@@ -120,6 +120,10 @@ export async function POST(request: Request) {
                     customerWilaya: validatedData.customerWilaya,
                     customerCommune: validatedData.customerCommune,
                     customerNote: validatedData.note,
+                    deliveryMethod:
+                        validatedData.deliveryMethod === "home"
+                            ? "HOME"
+                            : "STOPDESK",
                     productsTotal,
                     deliveryCost,
                     products: {
