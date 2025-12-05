@@ -2,7 +2,6 @@ import { Role } from "@/generated/prisma";
 import { prisma } from "@/lib/db";
 import { hasPermission } from "@/lib/permissions";
 import { getServerSession } from "@/lib/session";
-import { revalidatePath } from "next/cache";
 
 export async function PUT(
     request: Request,

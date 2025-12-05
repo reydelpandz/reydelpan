@@ -80,11 +80,12 @@ const Home = async () => {
 
                 <Reviews />
 
-                <div className="w-full bg-primary/5">
+                {/* <div className="w-full bg-primary/5">
                     <FAQ />
+                </div> */}
+                <div className="w-full bg-primary/5">
+                    <OurLocations />
                 </div>
-
-                <OurLocations />
             </div>
         </main>
     );
