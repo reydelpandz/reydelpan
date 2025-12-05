@@ -105,7 +105,9 @@ export default function CheckoutForm({ showThankYou }: CheckoutFormProps) {
     }, [wilaya]);
 
     useEffect(() => {
-        if (wilaya && commune) {
+        const condition =
+            deliveryMethod === "stop-desk" ? wilaya : wilaya && commune;
+        if (condition) {
             const selectedWilayaData = wilayas.find((w) => w.name === wilaya);
             if (selectedWilayaData) {
                 setShippingFee(selectedWilayaData.deliveryFees[deliveryMethod]);
