@@ -15,6 +15,8 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertTitle } from "@/components/ui/alert";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 
 const OrdersHeader = () => {
     const router = useRouter();
@@ -23,13 +25,16 @@ const OrdersHeader = () => {
 
     const [searchType, setSearchType] = useState<string>("name");
     const [searchQuery, setSearchQuery] = useState<string>("");
+    const [showAll, setShowAll] = useState<boolean>(false);
 
     // Initialize search values from URL params
     useEffect(() => {
         const type = searchParams.get("searchType") || "name";
         const query = searchParams.get("query") || "";
+        const showAllOrders = searchParams.get("showAll") === "true";
         setSearchType(type);
         setSearchQuery(query);
+        setShowAll(showAllOrders);
     }, [searchParams]);
 
     const handleSearch = () => {
@@ -41,9 +46,11 @@ const OrdersHeader = () => {
         if (searchQuery) {
             params.set("searchType", searchType);
             params.set("query", searchQuery);
+            params.set("showAll", `${showAll}`);
         } else {
             params.delete("searchType");
             params.delete("query");
+            params.delete("showAll");
         }
 
         router.push(`${pathname}?${params.toString()}`);
@@ -83,6 +90,14 @@ const OrdersHeader = () => {
                         <Button onClick={handleSearch} variant="secondary">
                             <RiSearchLine className="size-5" />
                         </Button>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                        <Switch
+                            checked={showAll}
+                            onCheckedChange={setShowAll}
+                            id="show-all"
+                        />
+                        <Label htmlFor="show-all">Show All</Label>
                     </div>
                 </div>
                 <Link

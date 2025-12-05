@@ -24,6 +24,7 @@ const OrdersPage = async ({
     const status = (await searchParams).status as OrderStatus;
     const searchType = (await searchParams).searchType;
     const query = (await searchParams).query;
+    const showAllOrders = (await searchParams).showAllOrders === "true";
 
     const page = parseInt((await searchParams).page || "1");
     const pageSize = 10;
@@ -34,7 +35,9 @@ const OrdersPage = async ({
     if (status) {
         whereClause.status = status;
     } else {
-        whereClause.status = { not: "SHIPPING" as OrderStatus };
+        if (!showAllOrders) {
+            whereClause.status = { not: "SHIPPING" as OrderStatus };
+        }
     }
 
     if (query && searchType) {
