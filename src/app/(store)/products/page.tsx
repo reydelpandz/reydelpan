@@ -1,6 +1,11 @@
 import ProductFilters from "@/components/products/ProductFilters";
 import ProductsList from "@/components/products/ProductsList";
 import { prisma } from "@/lib/db";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "قائمة المنتجات",
+};
 
 const ProductsPage = async () => {
     const products = await prisma.product.findMany({

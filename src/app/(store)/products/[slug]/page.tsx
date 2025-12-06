@@ -9,6 +9,7 @@ import AddToCart from "@/components/products/AddToCart";
 import { prisma } from "@/lib/db";
 import ProductsCarousel from "@/components/products/ProductsCarousel";
 import { RiTruckLine } from "@remixicon/react";
+import { Metadata } from "next";
 
 const ProductPage = async ({
     params,
@@ -149,4 +150,63 @@ export async function generateStaticParams() {
     });
 
     return products;
+}
+
+export async function generateMetadata({
+    params,
+}: {
+    params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+    const slug = decodeURIComponent((await params).slug);
+
+    const product = await prisma.product.findUnique({
+        where: { slug, isHidden: false },
+        select: {
+            name: true,
+            images: true,
+            shortDescription: true,
+            categories: { include: { category: true } },
+        },
+    });
+
+    if (!product) {
+        return {
+            title: "Product Not Found",
+        };
+    }
+
+    const productImage = product.images[0] || "/placeholder.svg";
+
+    return {
+        title: `${product.name} | Rey del Pan`,
+        description: product.shortDescription,
+
+        openGraph: {
+            title: product.name,
+            description: product.shortDescription,
+            images: [
+                {
+                    url: productImage,
+                    width: 500,
+                    height: 500,
+                    alt: product.name,
+                },
+            ],
+            type: "website",
+            siteName: "Rey del Pan",
+        },
+
+        twitter: {
+            card: "summary_large_image",
+            title: product.name,
+            description: product.shortDescription,
+            images: [productImage],
+        },
+
+        alternates: {
+            canonical: `/products/${slug}`,
+        },
+
+        keywords: product.categories.map((category) => category.category.label),
+    };
 }

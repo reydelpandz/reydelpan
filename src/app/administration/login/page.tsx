@@ -55,7 +55,7 @@ export default function Login() {
         if (result.error) {
             toast.error(result.error.message);
         } else {
-            router.replace("/administration/products");
+            router.replace("/administration/orders");
         }
     };
 
