@@ -37,11 +37,15 @@ const AboutUs = () => {
                         initial={{ opacity: 0, scale: 0.95 }}
                         whileInView={{ opacity: 1, scale: 1 }}
                         viewport={{ once: true, margin: "-100px" }}
-                        transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
+                        transition={{
+                            duration: 0.6,
+                            delay: 0.2,
+                            ease: "easeOut",
+                        }}
                         className="w-full h-[200px] md:h-[240px] rounded-lg overflow-hidden mb-4"
                     >
                         <img
-                            src="/images/photo2.jpg"
+                            src="/images/photo2.webp"
                             alt="Fresh bread display"
                             className="w-full h-full object-cover"
                         />
@@ -51,7 +55,11 @@ const AboutUs = () => {
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true, margin: "-100px" }}
-                        transition={{ duration: 0.6, delay: 0.35, ease: "easeOut" }}
+                        transition={{
+                            duration: 0.6,
+                            delay: 0.35,
+                            ease: "easeOut",
+                        }}
                         className="text-lg md:text-xl leading-relaxed"
                     >
                         مخبزنا يسعى لتقديم أفضل المخبوزات الصحية والمغذية، مع
@@ -74,7 +82,7 @@ const AboutUs = () => {
                     className="w-full h-[400px] md:h-[500px] rounded-lg overflow-hidden"
                 >
                     <img
-                        src="/images/photo1.jpg"
+                        src="/images/photo1.webp"
                         alt="Artisan bread"
                         className="w-full h-full object-cover"
                     />

@@ -22,7 +22,7 @@ export const HeroBanners = () => {
         >
             <CarouselContent>
                 <CarouselItem>
-                    <div className="w-full h-[calc(100dvh-96px)] flex items-center relative bg-[url(/images/banner1.jpg)] bg-cover bg-center">
+                    <div className="w-full h-[calc(100dvh-96px)] flex items-center relative bg-[url(/images/banner1.webp)] bg-cover bg-center">
                         <div className="container text-center mx-auto text-white z-3">
                             <motion.h1
                                 initial={{ opacity: 0, y: 20 }}

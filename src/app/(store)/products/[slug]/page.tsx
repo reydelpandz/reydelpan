@@ -180,7 +180,7 @@ export async function generateMetadata({
     return {
         title: `${product.name} | Rey del Pan`,
         description: product.shortDescription,
-
+        metadataBase: new URL("https://www.rey-del-pan.com"),
         openGraph: {
             title: product.name,
             description: product.shortDescription,
