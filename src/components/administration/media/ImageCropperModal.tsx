@@ -2,7 +2,12 @@
 
 import { useState, useCallback, useEffect } from "react";
 import Cropper from "react-easy-crop";
-import { getCroppedImg, CroppedArea, formatFileSize } from "@/lib/utils/media";
+import {
+    getCroppedImg,
+    CroppedArea,
+    formatFileSize,
+    convertToWebPWithQuality,
+} from "@/lib/utils/media";
 import {
     Dialog,
     DialogContent,
@@ -33,6 +38,15 @@ type AspectRatioOption = {
 };
 
 const aspectRatioOptions: AspectRatioOption[] = [
+    // No crop
+    {
+        value: "none",
+        label: "None",
+        ratio: undefined,
+        description: "No cropping, keep original dimensions",
+    },
+
+    // Square - recommended for products
     {
         value: "1:1",
         label: "1:1",
@@ -40,16 +54,37 @@ const aspectRatioOptions: AspectRatioOption[] = [
         description: "Best for products (600×600)",
         isRecommended: true,
     },
+
+    // Landscape options
     {
-        value: "free",
-        label: "Free",
-        ratio: undefined,
-        description: "Custom crop",
+        value: "4:3",
+        label: "4:3",
+        ratio: 4 / 3,
+        description: "Standard landscape",
     },
-    { value: "4:3", label: "4:3", ratio: 4 / 3, description: "Standard" },
-    { value: "16:9", label: "16:9", ratio: 16 / 9, description: "Widescreen" },
+    { value: "3:2", label: "3:2", ratio: 3 / 2, description: "Classic photo" },
+    {
+        value: "16:9",
+        label: "16:9",
+        ratio: 16 / 9,
+        description: "Widescreen / Banner",
+    },
+    { value: "2:1", label: "2:1", ratio: 2 / 1, description: "Panoramic" },
+
+    // Portrait options
     { value: "3:4", label: "3:4", ratio: 3 / 4, description: "Portrait" },
-    { value: "9:16", label: "9:16", ratio: 9 / 16, description: "Story" },
+    {
+        value: "2:3",
+        label: "2:3",
+        ratio: 2 / 3,
+        description: "Classic portrait",
+    },
+    {
+        value: "9:16",
+        label: "9:16",
+        ratio: 9 / 16,
+        description: "Mobile / Story",
+    },
 ];
 
 export function ImageCropperModal({
@@ -67,14 +102,13 @@ export function ImageCropperModal({
         useState<CroppedArea | null>(null);
     const [isProcessing, setIsProcessing] = useState(false);
 
-    // Preview state
-    const [previewBlob, setPreviewBlob] = useState<Blob | null>(null);
-    const [isGeneratingPreview, setIsGeneratingPreview] = useState(false);
+    const [previewSize, setPreviewSize] = useState<number | null>(null);
 
+    const isNoCrop = selectedAspect === "none";
     const currentAspect = aspectRatioOptions.find(
         (a) => a.value === selectedAspect
     );
-    const aspectRatio = currentAspect?.ratio;
+    const aspectRatio = isNoCrop ? undefined : currentAspect?.ratio;
 
     const onCropChange = useCallback((crop: { x: number; y: number }) => {
         setCrop(crop);
@@ -91,52 +125,63 @@ export function ImageCropperModal({
         []
     );
 
-    // Generate preview when quality or crop changes
+    // Generate size estimate when crop changes
     useEffect(() => {
-        if (!croppedAreaPixels || !isOpen) return;
+        if (!isOpen) return;
+        if (isNoCrop) {
+            setPreviewSize(null);
+            return;
+        }
+        if (!croppedAreaPixels) return;
 
         const timeout = setTimeout(async () => {
-            setIsGeneratingPreview(true);
             try {
                 const isSquareProduct = selectedAspect === "1:1";
                 const blob = await getCroppedImg(imageSrc, croppedAreaPixels, {
                     isSquareProduct,
                     quality: quality / 100,
                 });
-                setPreviewBlob(blob);
+                setPreviewSize(blob.size);
             } catch (error) {
                 console.error("Error generating preview:", error);
-            } finally {
-                setIsGeneratingPreview(false);
             }
         }, 300);
 
         return () => clearTimeout(timeout);
-    }, [quality, croppedAreaPixels, selectedAspect, imageSrc, isOpen]);
+    }, [
+        quality,
+        croppedAreaPixels,
+        selectedAspect,
+        imageSrc,
+        isOpen,
+        isNoCrop,
+    ]);
 
-    const handleCrop = async () => {
-        if (!croppedAreaPixels) return;
-
+    const handleApply = async () => {
         setIsProcessing(true);
         try {
-            const isSquareProduct = selectedAspect === "1:1";
+            let blob: Blob;
 
-            const croppedBlob = await getCroppedImg(
-                imageSrc,
-                croppedAreaPixels,
-                {
+            if (isNoCrop) {
+                blob = await convertToWebPWithQuality(imageSrc, quality / 100);
+            } else if (croppedAreaPixels) {
+                const isSquareProduct = selectedAspect === "1:1";
+                blob = await getCroppedImg(imageSrc, croppedAreaPixels, {
                     isSquareProduct,
                     quality: quality / 100,
-                }
-            );
+                });
+            } else {
+                setIsProcessing(false);
+                return;
+            }
 
             const nameWithoutExt = fileName.replace(/\.[^/.]+$/, "");
             const webpFileName = `${nameWithoutExt}.webp`;
 
-            onCropComplete(croppedBlob, webpFileName);
+            onCropComplete(blob, webpFileName);
             onClose();
         } catch (error) {
-            console.error("Error cropping image:", error);
+            console.error("Error processing image:", error);
         } finally {
             setIsProcessing(false);
         }
@@ -145,6 +190,8 @@ export function ImageCropperModal({
     const handleAspectChange = (value: string) => {
         setSelectedAspect(value);
         setCrop({ x: 0, y: 0 });
+        setZoom(1);
+        setPreviewSize(null);
     };
 
     const getQualityLabel = (q: number) => {
@@ -158,31 +205,39 @@ export function ImageCropperModal({
         <Dialog open={isOpen} onOpenChange={onClose}>
             <DialogContent className="sm:max-w-4xl max-h-[95vh] flex flex-col p-0 gap-0 overflow-hidden">
                 <DialogHeader className="px-6 py-4 border-b bg-muted/30">
-                    <DialogTitle className="flex items-center gap-2">
-                        Crop & Optimize Image
-                    </DialogTitle>
+                    <DialogTitle>Crop & Optimize Image</DialogTitle>
                 </DialogHeader>
 
                 <div className="flex-1 min-h-0 flex flex-col lg:flex-row">
-                    {/* Cropper Area */}
+                    {/* Image Area */}
                     <div className="flex-1 relative bg-black/90 min-h-[300px] lg:min-h-[400px]">
-                        <Cropper
-                            image={imageSrc}
-                            crop={crop}
-                            zoom={zoom}
-                            aspect={aspectRatio}
-                            onCropChange={onCropChange}
-                            onZoomChange={onZoomChange}
-                            onCropComplete={onCropCompleteCallback}
-                        />
+                        {isNoCrop ? (
+                            <div className="absolute inset-0 flex items-center justify-center p-4">
+                                <img
+                                    src={imageSrc}
+                                    alt="Preview"
+                                    className="max-w-full max-h-full object-contain"
+                                />
+                            </div>
+                        ) : (
+                            <Cropper
+                                image={imageSrc}
+                                crop={crop}
+                                zoom={zoom}
+                                aspect={aspectRatio}
+                                onCropChange={onCropChange}
+                                onZoomChange={onZoomChange}
+                                onCropComplete={onCropCompleteCallback}
+                            />
+                        )}
                     </div>
 
                     {/* Controls Sidebar */}
                     <div className="w-full lg:w-80 border-t lg:border-t-0 lg:border-l bg-background p-4 space-y-5 overflow-y-auto">
-                        {/* Aspect Ratio */}
+                        {/* Crop Mode */}
                         <div className="space-y-3">
                             <Label className="text-sm font-medium">
-                                Aspect Ratio
+                                Crop Ratio
                             </Label>
                             <div className="grid grid-cols-3 gap-2">
                                 {aspectRatioOptions.map((option) => (
@@ -222,31 +277,33 @@ export function ImageCropperModal({
                                     )}
                                 >
                                     {currentAspect.description}
-                                    {currentAspect.isRecommended &&
-                                        " — Optimized for product images"}
                                 </p>
                             )}
                         </div>
 
-                        {/* Zoom Slider */}
-                        <div className="space-y-3">
-                            <div className="flex items-center justify-between">
-                                <Label className="text-sm font-medium">
-                                    Zoom
-                                </Label>
-                                <span className="text-xs text-muted-foreground">
-                                    {zoom.toFixed(1)}x
-                                </span>
+                        {/* Zoom Slider - only show when cropping */}
+                        {!isNoCrop && (
+                            <div className="space-y-3">
+                                <div className="flex items-center justify-between">
+                                    <Label className="text-sm font-medium">
+                                        Zoom
+                                    </Label>
+                                    <span className="text-xs text-muted-foreground">
+                                        {zoom.toFixed(1)}x
+                                    </span>
+                                </div>
+                                <Slider
+                                    value={[zoom]}
+                                    onValueChange={(values) =>
+                                        setZoom(values[0])
+                                    }
+                                    min={1}
+                                    max={3}
+                                    step={0.1}
+                                    className="w-full"
+                                />
                             </div>
-                            <Slider
-                                value={[zoom]}
-                                onValueChange={(values) => setZoom(values[0])}
-                                min={1}
-                                max={3}
-                                step={0.1}
-                                className="w-full"
-                            />
-                        </div>
+                        )}
 
                         {/* Quality Slider */}
                         <div className="space-y-3">
@@ -292,21 +349,16 @@ export function ImageCropperModal({
                                     </span>
                                 </div>
                             )}
-                            <div className="flex items-center justify-between text-xs">
-                                <span className="text-muted-foreground">
-                                    Est. size:
-                                </span>
-                                <span
-                                    className={cn(
-                                        "font-medium",
-                                        isGeneratingPreview && "opacity-50"
-                                    )}
-                                >
-                                    {previewBlob
-                                        ? formatFileSize(previewBlob.size)
-                                        : "Calculating..."}
-                                </span>
-                            </div>
+                            {previewSize && (
+                                <div className="flex items-center justify-between text-xs">
+                                    <span className="text-muted-foreground">
+                                        Est. size:
+                                    </span>
+                                    <span className="font-medium">
+                                        {formatFileSize(previewSize)}
+                                    </span>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -316,7 +368,7 @@ export function ImageCropperModal({
                         Cancel
                     </Button>
                     <Button
-                        onClick={handleCrop}
+                        onClick={handleApply}
                         disabled={isProcessing}
                         className="min-w-[140px]"
                     >

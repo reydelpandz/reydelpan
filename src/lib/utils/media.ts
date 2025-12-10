@@ -161,3 +161,50 @@ export function formatFileSize(bytes: number): string {
     if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
     return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }
+
+/**
+ * Converts image to WebP with custom quality (for skip crop)
+ */
+export async function convertToWebPWithQuality(
+    imageSrc: string,
+    quality: number = 0.8
+): Promise<Blob> {
+    const image = await createImage(imageSrc);
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+
+    if (!ctx) {
+        throw new Error("Failed to get canvas context");
+    }
+
+    // Keep original dimensions but cap at 1920px width
+    let width = image.width;
+    let height = image.height;
+
+    if (width > 1920) {
+        const ratio = 1920 / width;
+        width = 1920;
+        height = Math.round(height * ratio);
+    }
+
+    canvas.width = width;
+    canvas.height = height;
+
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = "high";
+    ctx.drawImage(image, 0, 0, width, height);
+
+    return new Promise((resolve, reject) => {
+        canvas.toBlob(
+            (blob) => {
+                if (!blob) {
+                    reject(new Error("Canvas is empty"));
+                    return;
+                }
+                resolve(blob);
+            },
+            "image/webp",
+            quality
+        );
+    });
+}
