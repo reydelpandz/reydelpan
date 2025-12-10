@@ -1,10 +1,10 @@
 import {
-    RiHome5Line,
     RiShoppingBag3Line,
-    RiArchiveLine,
     RiBox3Line,
     RiListIndefinite,
     RiImageLine,
+    RiSettingsLine,
+    RiUserLine,
 } from "@remixicon/react";
 
 import {
@@ -24,11 +24,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
 const items = [
-    // {
-    //     title: "Dashboard",
-    //     url: "/administration",
-    //     icon: RiHome5Line,
-    // },
+   
     {
         title: "Products",
         url: "/administration/products",
@@ -47,12 +43,17 @@ const items = [
     {
         title: "Users",
         url: "/administration/users",
-        icon: RiArchiveLine,
+        icon: RiUserLine,
     },
     {
         title: "Media",
         url: "/administration/media",
         icon: RiImageLine,
+    },
+    {
+        title: "Settings",
+        url: "/administration/settings",
+        icon: RiSettingsLine,
     },
 ];
 
