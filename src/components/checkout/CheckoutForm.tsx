@@ -60,9 +60,11 @@ export type CheckoutFormValues = z.infer<typeof formSchema>;
 
 interface CheckoutFormProps {
     showThankYou: () => void;
+    isUnderPressure?: boolean;
+    onShowPressureModal?: () => void;
 }
 
-export default function CheckoutForm({ showThankYou }: CheckoutFormProps) {
+export default function CheckoutForm({ showThankYou, isUnderPressure = false, onShowPressureModal }: CheckoutFormProps) {
     const [selectedWilaya, setSelectedWilaya] = useState<string | null>(null);
     const [communes, setCommunes] = useState<string[]>([]);
     const { cartItems, emptyCart, setShippingFee, shippingFee, isEmpty } =
@@ -378,14 +380,37 @@ export default function CheckoutForm({ showThankYou }: CheckoutFormProps) {
                             </AlertDescription>
                         </Alert>
 
-                        <Button
-                            disabled={isEmpty}
-                            isLoading={form.formState.isSubmitting}
-                            type="submit"
-                            className="w-full mt-4"
-                        >
-                            تأكيد الطلب
-                        </Button>
+                        {isUnderPressure ? (
+                            <div className="space-y-3 mt-4">
+                                <Alert className="border-amber-500 bg-amber-50 dark:bg-amber-950/30">
+                                    <AlertTitle className="text-amber-700 dark:text-amber-400 flex items-center gap-2">
+                                        <span className="size-2 rounded-full bg-amber-500 animate-pulse" />
+                                        الطلبات متوقفة مؤقتاً
+                                    </AlertTitle>
+                                    <AlertDescription className="text-amber-600 dark:text-amber-300">
+                                        نظراً للضغط الكبير على طلباتنا، لا يمكننا قبول طلبات جديدة حالياً.
+                                        يرجى العودة لاحقاً.
+                                    </AlertDescription>
+                                </Alert>
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    className="w-full border-amber-500 text-amber-700 hover:bg-amber-50"
+                                    onClick={onShowPressureModal}
+                                >
+                                    مزيد من التفاصيل
+                                </Button>
+                            </div>
+                        ) : (
+                            <Button
+                                disabled={isEmpty}
+                                isLoading={form.formState.isSubmitting}
+                                type="submit"
+                                className="w-full mt-4"
+                            >
+                                تأكيد الطلب
+                            </Button>
+                        )}
                     </form>
                 </Form>
             </CardContent>

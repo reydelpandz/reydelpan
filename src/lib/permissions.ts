@@ -33,6 +33,10 @@ export const PERMISSIONS = [
     "CREATE_MEDIA",
     "EDIT_MEDIA",
     "DELETE_MEDIA",
+
+    // Settings
+    "VIEW_SETTINGS",
+    "EDIT_SETTINGS",
 ] as const;
 
 export type Permission = (typeof PERMISSIONS)[number] | "*";
