@@ -7,7 +7,6 @@ import {
     DialogTitle,
     DialogDescription,
 } from "@/components/ui/dialog";
-import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -17,19 +16,8 @@ interface UnderPressureModalProps {
 }
 
 const UnderPressureModal = ({ isUnderPressure }: UnderPressureModalProps) => {
-    const searchParams = useSearchParams();
-    const router = useRouter();
-    const pathname = usePathname();
     const [isOpen, setIsOpen] = useState(false);
 
-    useEffect(() => {
-        const showPressureModal = searchParams.get("pressure") === "true";
-        if (showPressureModal && isUnderPressure) {
-            setIsOpen(true);
-        }
-    }, [searchParams, isUnderPressure]);
-
-    // Also show modal automatically when visiting the site for the first time
     useEffect(() => {
         if (isUnderPressure) {
             // Check if user has already seen the modal in this session
@@ -43,13 +31,6 @@ const UnderPressureModal = ({ isUnderPressure }: UnderPressureModalProps) => {
 
     const handleClose = () => {
         setIsOpen(false);
-        // Remove the pressure param from URL if present
-        const params = new URLSearchParams(searchParams.toString());
-        if (params.has("pressure")) {
-            params.delete("pressure");
-            const newUrl = params.toString() ? `${pathname}?${params.toString()}` : pathname;
-            router.replace(newUrl, { scroll: false });
-        }
     };
 
     if (!isUnderPressure) {
@@ -73,7 +54,7 @@ const UnderPressureModal = ({ isUnderPressure }: UnderPressureModalProps) => {
                     <DialogTitle className="text-center text-2xl font-bold text-amber-600">
                         تنبيه هام
                     </DialogTitle>
-                    
+
                     <DialogDescription className="text-center text-base leading-relaxed">
                         <div className="space-y-4">
                             <p className="text-lg font-medium text-foreground">
@@ -81,8 +62,9 @@ const UnderPressureModal = ({ isUnderPressure }: UnderPressureModalProps) => {
                             </p>
                             <div className="rounded-lg bg-amber-50 dark:bg-amber-950/30 p-4 border border-amber-200 dark:border-amber-800">
                                 <p className="text-amber-800 dark:text-amber-200">
-                                    بسبب الطلب الكبير على منتجاتنا، قد نواجه تأخيراً في معالجة الطلبات.
-                                    نعتذر عن أي إزعاج قد يسببه ذلك ونشكركم على تفهمكم وصبركم.
+                                    بسبب الطلب الكبير على منتجاتنا، قد نواجه
+                                    تأخيراً في معالجة الطلبات. نعتذر عن أي إزعاج
+                                    قد يسببه ذلك ونشكركم على تفهمكم وصبركم.
                                 </p>
                             </div>
                             <p className="text-muted-foreground">

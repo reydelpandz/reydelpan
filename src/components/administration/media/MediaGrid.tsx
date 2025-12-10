@@ -8,14 +8,23 @@ import { Copy, Trash2, Check } from "lucide-react";
 import { toast } from "sonner";
 import NoResults from "../NoResults";
 import { useModal } from "@/hooks/use-modal";
+import { Pagination } from "@/components/ui/pagination";
 
 interface MediaGridProps {
     files: MediaFile[];
 }
 
+const ITEMS_PER_PAGE = 10;
+
 export function MediaGrid({ files }: MediaGridProps) {
     const { toggle } = useModal();
     const [copiedUrl, setCopiedUrl] = useState<string | null>(null);
+    const [currentPage, setCurrentPage] = useState(1);
+
+    const totalPages = Math.ceil(files.length / ITEMS_PER_PAGE);
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    const endIndex = startIndex + ITEMS_PER_PAGE;
+    const currentFiles = files.slice(startIndex, endIndex);
 
     const copyUrl = async (url: string) => {
         try {
@@ -29,6 +38,11 @@ export function MediaGrid({ files }: MediaGridProps) {
         }
     };
 
+    const handlePageChange = (page: number) => {
+        setCurrentPage(page);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+
     if (files.length === 0) {
         return <NoResults />;
     }
@@ -36,7 +50,7 @@ export function MediaGrid({ files }: MediaGridProps) {
     return (
         <>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-                {files.map((file) => (
+                {currentFiles.map((file) => (
                     <Card key={file.name} className="overflow-hidden p-0 group">
                         <div className="aspect-square relative">
                             <img
@@ -85,6 +99,22 @@ export function MediaGrid({ files }: MediaGridProps) {
                     </Card>
                 ))}
             </div>
+
+            {totalPages > 1 && (
+                <div className="mt-8 flex flex-col items-center gap-4">
+                    <Pagination
+                        currentPage={currentPage}
+                        totalPages={totalPages}
+                        onPageChange={handlePageChange}
+                    />
+
+                    <p className="text-sm text-muted-foreground">
+                        Showing {startIndex + 1}-
+                        {Math.min(endIndex, files.length)} of {files.length}{" "}
+                        files
+                    </p>
+                </div>
+            )}
         </>
     );
 }

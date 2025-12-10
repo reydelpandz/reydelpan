@@ -5,8 +5,9 @@ import path from "path";
 import { revalidatePath } from "next/cache";
 import { getServerSession } from "@/lib/session";
 import { hasPermission } from "@/lib/permissions";
-import { Role } from "@/generated/prisma";
+
 import { getMediaDirectory } from "@/lib/media";
+import { Role } from "@/generated/prisma";
 
 export async function uploadMedia(formData: FormData) {
     try {
@@ -80,14 +81,51 @@ export async function deleteMedia(filename: string) {
     try {
         const authSession = await getServerSession();
         if (!hasPermission(authSession?.user.role as Role, "DELETE_MEDIA")) {
-            return { success: false, message: "Unauthorized" };
+            return { success: false, error: "Unauthorized" };
+        }
+
+        const prisma = (await import("@/lib/db")).prisma;
+        const mediaUrl = `/media/${filename}`;
+
+        // Check if any products use this image
+        const productsUsingMedia = await prisma.product.findMany({
+            where: {
+                images: {
+                    has: mediaUrl,
+                },
+            },
+            select: {
+                id: true,
+                name: true,
+            },
+        });
+
+        // Check if any categories use this image
+        const categoriesUsingMedia = await prisma.category.findMany({
+            where: {
+                image: mediaUrl,
+            },
+            select: {
+                id: true,
+                label: true,
+            },
+        });
+
+        if (productsUsingMedia.length > 0 || categoriesUsingMedia.length > 0) {
+            return {
+                success: false,
+                inUse: true,
+                products: productsUsingMedia.map((p) => p.name),
+                categories: categoriesUsingMedia.map((c) => c.label),
+                error: "This media is currently in use",
+            };
         }
 
         const mediaDir = getMediaDirectory();
         const filepath = path.join(mediaDir, filename);
 
         await fs.unlink(filepath);
-        revalidatePath("/admin/media");
+        revalidatePath("/administration/media");
 
         return { success: true, message: "File deleted successfully" };
     } catch (error) {

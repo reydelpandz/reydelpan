@@ -61,10 +61,12 @@ export type CheckoutFormValues = z.infer<typeof formSchema>;
 interface CheckoutFormProps {
     showThankYou: () => void;
     isUnderPressure?: boolean;
-    onShowPressureModal?: () => void;
 }
 
-export default function CheckoutForm({ showThankYou, isUnderPressure = false, onShowPressureModal }: CheckoutFormProps) {
+export default function CheckoutForm({
+    showThankYou,
+    isUnderPressure = false,
+}: CheckoutFormProps) {
     const [selectedWilaya, setSelectedWilaya] = useState<string | null>(null);
     const [communes, setCommunes] = useState<string[]>([]);
     const { cartItems, emptyCart, setShippingFee, shippingFee, isEmpty } =
@@ -388,18 +390,11 @@ export default function CheckoutForm({ showThankYou, isUnderPressure = false, on
                                         الطلبات متوقفة مؤقتاً
                                     </AlertTitle>
                                     <AlertDescription className="text-amber-600 dark:text-amber-300">
-                                        نظراً للضغط الكبير على طلباتنا، لا يمكننا قبول طلبات جديدة حالياً.
-                                        يرجى العودة لاحقاً.
+                                        نظراً للضغط الكبير على طلباتنا، لا
+                                        يمكننا قبول طلبات جديدة حالياً. يرجى
+                                        العودة لاحقاً.
                                     </AlertDescription>
                                 </Alert>
-                                <Button
-                                    type="button"
-                                    variant="outline"
-                                    className="w-full border-amber-500 text-amber-700 hover:bg-amber-50"
-                                    onClick={onShowPressureModal}
-                                >
-                                    مزيد من التفاصيل
-                                </Button>
                             </div>
                         ) : (
                             <Button

@@ -7,7 +7,6 @@ import { useCart } from "@/hooks/use-cart";
 import { useRouter, useSearchParams } from "next/navigation";
 import ThankYou from "@/components/checkout/ThankYou";
 import { useIsMounted } from "@/hooks/use-is-mounted";
-import UnderPressureCheckoutModal from "@/components/checkout/UnderPressureCheckoutModal";
 
 interface CheckoutProps {
     isUnderPressure: boolean;
@@ -18,8 +17,6 @@ export default function CheckoutClient({ isUnderPressure }: CheckoutProps) {
     const [showThankYou, setShowThankYou] = useState(false);
     const router = useRouter();
     const isMounted = useIsMounted();
-    const searchParams = useSearchParams();
-    const [showPressureModal, setShowPressureModal] = useState(false);
 
     useEffect(() => {
         if (isEmpty && isMounted() && !showThankYou) {
@@ -33,19 +30,6 @@ export default function CheckoutClient({ isUnderPressure }: CheckoutProps) {
         }
     }, [showThankYou]);
 
-    // Show pressure modal when entering checkout if under pressure
-    useEffect(() => {
-        if (isUnderPressure) {
-            const showModal = searchParams.get("pressure") === "true";
-            if (showModal) {
-                setShowPressureModal(true);
-            } else {
-                // Always show on first visit to checkout when under pressure
-                setShowPressureModal(true);
-            }
-        }
-    }, [isUnderPressure, searchParams]);
-
     if (showThankYou) {
         return <ThankYou />;
     }
@@ -56,12 +40,6 @@ export default function CheckoutClient({ isUnderPressure }: CheckoutProps) {
                 إتمام الطلب
             </h1>
 
-            {/* Under Pressure Modal for Checkout */}
-            <UnderPressureCheckoutModal
-                isOpen={showPressureModal}
-                onClose={() => setShowPressureModal(false)}
-            />
-
             <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
                 <div className="lg:col-span-3">
                     <CheckoutSummary />
@@ -70,7 +48,6 @@ export default function CheckoutClient({ isUnderPressure }: CheckoutProps) {
                     <CheckoutForm
                         showThankYou={() => setShowThankYou(true)}
                         isUnderPressure={isUnderPressure}
-                        onShowPressureModal={() => setShowPressureModal(true)}
                     />
                 </div>
             </div>
