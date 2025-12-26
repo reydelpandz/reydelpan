@@ -42,6 +42,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             <Card className="h-full pt-0 overflow-hidden transition-all shadow-none hover:shadow-md">
                 <div className="relative ">
                     <img
+                        loading="lazy"
                         src={relevantImage || "/placeholder.svg"}
                         alt={product.name}
                         className="object-cover aspect-square size-full"

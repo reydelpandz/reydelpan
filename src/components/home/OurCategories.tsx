@@ -38,6 +38,7 @@ const OurCategories = ({ categories }: OurCategoriesProps) => {
                             className="w-full relative h-60 md:h-72 group block"
                         >
                             <img
+                                loading="lazy"
                                 className="size-full object-cover rounded-md "
                                 src={category.image ?? "/placeholder.svg"}
                                 alt={category.label}

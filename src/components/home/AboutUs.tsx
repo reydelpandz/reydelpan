@@ -45,6 +45,7 @@ const AboutUs = () => {
                         className="w-full h-[200px] md:h-[240px] rounded-lg overflow-hidden mb-4"
                     >
                         <img
+                            loading="lazy"
                             src="/images/photo2.webp"
                             alt="Fresh bread display"
                             className="w-full h-full object-cover"
@@ -82,6 +83,7 @@ const AboutUs = () => {
                     className="w-full h-[400px] md:h-[500px] rounded-lg overflow-hidden"
                 >
                     <img
+                        loading="lazy"
                         src="/images/photo1.webp"
                         alt="Artisan bread"
                         className="w-full h-full object-cover"
