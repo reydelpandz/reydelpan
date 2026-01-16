@@ -35,7 +35,10 @@ const ThankYou = () => {
                         </p>
                         <p className="text-muted-foreground leading-relaxed">
                             سيتم الإتصال بك بهذا الرقم{" "}
-                            <span className="text-primary font-semibold">
+                            <span
+                                dir="ltr"
+                                className="text-primary font-semibold"
+                            >
                                 0664578369
                             </span>{" "}
                             لتأكيد طلبك في الساعات القليلة القادمة.
