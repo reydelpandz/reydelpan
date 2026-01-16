@@ -61,7 +61,10 @@ const ThankYou = () => {
                     </div>
 
                     <div className="space-y-2 pt-2">
-                        <p className="text-2xl font-bold text-foreground tracking-wide">
+                        <p
+                            dir="ltr"
+                            className="text-2xl font-bold text-foreground tracking-wide"
+                        >
                             06 64 57 83 69
                         </p>
                         <p className="text-primary font-semibold">
