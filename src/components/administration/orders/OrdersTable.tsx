@@ -84,7 +84,9 @@ const OrdersTable = ({ orders, currentPage, totalPages }: OrdersTableProps) => {
                                 <OrderStatusBadge status={order.status} />
                             </TableCell>
                             <TableCell>
-                                {formatPrice(order.productsTotal)}
+                                {formatPrice(
+                                    order.productsTotal + order.deliveryCost,
+                                )}
                             </TableCell>
                             {/* <TableCell>No</TableCell> */}
                             <TableCell>
@@ -97,7 +99,7 @@ const OrdersTable = ({ orders, currentPage, totalPages }: OrdersTableProps) => {
                                         <span className="text-sm text-muted-foreground">
                                             {format(
                                                 order.confirmedAt,
-                                                "dd MMM yyyy | HH:mm"
+                                                "dd MMM yyyy | HH:mm",
                                             )}
                                         </span>
                                     </div>

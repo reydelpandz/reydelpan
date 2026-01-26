@@ -102,10 +102,10 @@ const OrdersHeader = () => {
                     <RiAddLine className="size-6" />
                 </Link>
             </div>
-            <Alert variant="destructive" className="mb-6">
+            <Alert variant="default" className="mb-6">
                 <RiErrorWarningFill className="size-5" />
                 <AlertTitle>
-                    The delivery cost is not included in the total shown below.
+                    تكلفة التوصيل مشمولة في المجموع الموضح أدناه.
                 </AlertTitle>
             </Alert>
         </div>
