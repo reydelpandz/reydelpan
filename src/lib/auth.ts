@@ -3,14 +3,17 @@ import { prismaAdapter } from "better-auth/adapters/prisma";
 import { prisma } from "./db";
 import { Role } from "@/generated/prisma";
 
-// How to use : https://www.youtube.com/watch?v=w5Emwt3nuV0
-
 export const auth = betterAuth({
     database: prismaAdapter(prisma, {
         provider: "postgresql",
     }),
     emailAndPassword: { enabled: true },
-    user: { additionalFields: { role: { type: "string", input: false } } },
+    user: {
+        // deleteUser: {
+        //     enabled: true,
+        // },
+        additionalFields: { role: { type: "string", input: false } },
+    },
     trustedOrigins: ["https://rey-del-pan.com"],
 });
 

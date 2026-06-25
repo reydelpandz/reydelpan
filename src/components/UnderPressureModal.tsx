@@ -58,17 +58,17 @@ const UnderPressureModal = ({ isUnderPressure }: UnderPressureModalProps) => {
                     <DialogDescription className="text-center text-base leading-relaxed">
                         <div className="space-y-4">
                             <p className="text-lg font-medium text-foreground">
-                                نحن نواجه ضغطاً كبيراً حالياً
+                                🚫تم إيقاف استقبال الطلبات مؤقتًا🚫
                             </p>
                             <div className="rounded-lg bg-amber-50 dark:bg-amber-950/30 p-4 border border-amber-200 dark:border-amber-800">
                                 <p className="text-amber-800 dark:text-amber-200">
-                                    بسبب الطلب الكبير على منتجاتنا، قد نواجه
-                                    تأخيراً في معالجة الطلبات. نعتذر عن أي إزعاج
-                                    قد يسببه ذلك ونشكركم على تفهمكم وصبركم.
+                                    نقوم حاليًا بتحضير وإرسال الطلبات المسجّلة
+                                    سابقًا لضمان احترام الجودة والتنظيم.
                                 </p>
                             </div>
                             <p className="text-muted-foreground">
-                                سنبذل قصارى جهدنا لخدمتكم في أقرب وقت ممكن.
+                                سيُعاد فتح المتجر فور الانتهاء من الطلبات الحالية.
+                                شكرًا لتفهمكم وثقتكم😊
                             </p>
                         </div>
                     </DialogDescription>
