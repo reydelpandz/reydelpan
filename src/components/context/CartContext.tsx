@@ -4,6 +4,7 @@ import { useState, createContext, useEffect } from "react";
 import useLocalStorageState from "use-local-storage-state";
 import { usePathname } from "next/navigation";
 import axios, { isAxiosError } from "axios";
+import { useQuery } from "@tanstack/react-query";
 import { Product } from "@/generated/prisma";
 import { toast } from "sonner";
 
@@ -44,6 +45,14 @@ const CartContextProvider = ({ children }: { children: React.ReactNode }) => {
     const [shippingFee, setShippingFee] = useState<number | null>(null);
     const [signalCart, setSignalCart] = useState(false);
 
+    const { data: isUnderPressure = false } = useQuery({
+        queryKey: ["settings", "isUnderPressure"],
+        queryFn: async () => {
+            const { data } = await axios.get("/api/settings");
+            return !!data?.settings?.isUnderPressure;
+        },
+    });
+
     const close = () => setShowCart(false);
     const open = () => setShowCart(true);
     const toggle = () => setShowCart((prev) => !prev);
@@ -68,6 +77,11 @@ const CartContextProvider = ({ children }: { children: React.ReactNode }) => {
     const updateItemQuantity = (product: Product, by: 1 | -1) => {
         const qtyInCart = getItemQuantity(product.id);
 
+        if (by === 1 && isUnderPressure) {
+            toast.error("تم إيقاف استقبال الطلبات مؤقتًا");
+            return;
+        }
+
         if (by === 1 && qtyInCart >= product.quantity) {
             toast.error("لا توجد كمية كافية في المخزون");
             return;
@@ -90,6 +104,11 @@ const CartContextProvider = ({ children }: { children: React.ReactNode }) => {
         item: Product,
         selectedValues: Record<string, string> = {}
     ) => {
+        if (isUnderPressure) {
+            toast.error("تم إيقاف استقبال الطلبات مؤقتًا");
+            return;
+        }
+
         const qtyInCart = getItemQuantity(item.id);
 
         if (qtyInCart >= item.quantity) {
