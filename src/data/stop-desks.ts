@@ -1,137 +1,86 @@
 export const stopDesks = [
     {
-        wilayaCode: "01",
-        wilayaName: "Adrar",
-        addresses: ["à côté de lycée ELMOGHILI, derrière le conseil judicaire"],
-    },
-    {
         wilayaCode: "02",
         wilayaName: "Chlef",
-        addresses: [
-            "1/ Hay aroudj-derrière A D E en face le musée",
-            "2/ N°6 commune de Ténès A, Rue Boufadis, Lot 51 Bâtiments - à côté de la caserne militaire, Route Marina Bâtiments Mandil",
-        ],
-    },
-    {
-        wilayaCode: "03",
-        wilayaName: "Laghouat",
-        addresses: ["Cité mhafir en face parking du département de biologie"],
+        addresses: ["Bocca hay salam chlef"],
     },
     {
         wilayaCode: "04",
         wilayaName: "Oum El Bouaghi",
         addresses: [
-            "Tahsise el Amel, en face le collège koshari Ain el Beida",
-            "N°392 cité ennacer",
+            "Attribution future, rez-de-chaussée, boutique n°02,bloc 56,propriété 65, oum el bouaghi ( en face du siège de la wilaya)",
         ],
     },
     {
         wilayaCode: "05",
         wilayaName: "Batna",
-        addresses: ["Les allés jadida erriad a côté supérette el bahja"],
+        addresses: [
+            "Quartier 1272,complexe résidentiel en face de l'école intermédiaire martyr Ammar shamlal , a cote de la mosquée ammar ibn Yasser",
+        ],
     },
     {
         wilayaCode: "06",
         wilayaName: "Béjaïa",
-        addresses: [
-            "Edimco, Cité somacob",
-            "Akbou Gare ferroviaire, a côté salle des fêtes HADAD",
-        ],
-    },
-    {
-        wilayaCode: "07",
-        wilayaName: "Biskra",
-        addresses: ["El koures- en face salle des fêtes soukara-"],
-    },
-    {
-        wilayaCode: "08",
-        wilayaName: "Béchar",
-        addresses: ["Cité 220 log -à côté de LA DIRECTION DU L'EAU"],
+        addresses: ["حي 112مسكن الحي الصغير عمارة مشتركة أمام مدرسة حيطوش"],
     },
     {
         wilayaCode: "09",
         wilayaName: "Blida",
         addresses: [
-            "Frantz fanon, hai zabana à coté salle des fêtes Djalil (GPS : flash delivery Blida)",
+            "GPS : flash delivery 09 )) حي 22 مسكن شارع المدارس عمارة أ رقم 04 زعبانة البليدة",
         ],
     },
     {
         wilayaCode: "10",
         wilayaName: "Bouira",
-        addresses: ["338log -En face de l'hôtel Sofy-"],
-    },
-    {
-        wilayaCode: "11",
-        wilayaName: "Tamanrasset",
-        addresses: ["Cité el wiam en face casnos"],
+        addresses: [
+            "point d repère a 100 mètre de portail d l'hôpital Mohamed Boudiaf",
+        ],
     },
     {
         wilayaCode: "12",
         wilayaName: "Tébessa",
-        addresses: [
-            "Tahsis El arebi El Tebsi (Skanska) En face المديرية الولائية لبريد الجزائر تبسة",
-        ],
+        addresses: ["Dans le quartier de larmot, en face de l(hôtel al asil"],
     },
     {
         wilayaCode: "13",
         wilayaName: "Tlemcen",
-        addresses: ["en face rond point cité des oliviers"],
-    },
-    {
-        wilayaCode: "14",
-        wilayaName: "Tiaret",
-        addresses: [
-            "Route l’académie en face l’hôpital du rein a cote de la librairie Mimouni.",
-        ],
+        addresses: ["El yamama en face la caisse des retraites ."],
     },
     {
         wilayaCode: "15",
         wilayaName: "Tizi Ouzou",
-        addresses: [
-            "Lot Sud-Ouest 314, Tizi Ouzou, à côté du Boulevard Stiti (anciennement Concorde), à Proximité des Trois Roses et de la salle Omnisport Need for Gym.",
-        ],
+        addresses: ["LOC N01 Azibe Ahmed Nouvelle-Ville Tizi Ouzou"],
     },
     {
         wilayaCode: "16",
         wilayaName: "Alger",
         addresses: [
-            "Dar el beida, rue el boustane, 16033(GPS: flash delivery dz)",
-            "OUED SEMAR SALIBA",
-        ],
-    },
-    {
-        wilayaCode: "17",
-        wilayaName: "Djelfa",
-        addresses: [
-            "Cité berbih- a côté de la direction de l'action sociale et de la solidarité LA DASS",
+            "Dar el beida, rue el boustane, 16033(GPS: flash delivery dz) OUED SEMAR SALIBA",
         ],
     },
     {
         wilayaCode: "18",
         wilayaName: "Jijel",
         addresses: [
-            "حي كمال إسماعيل أمام المدخل الرئيسي لجامعة جيجل اكيتي",
-            "Jijel Taher بوكعبور الطريق المؤدي الى عيادة طب العيون محنان.",
+            "09 rue Kamal ismail,ouled aissa, en face de l'université , Jijel",
         ],
     },
     {
         wilayaCode: "19",
         wilayaName: "Sétif",
-        addresses: [
-            "Cité Dalas 3ème tranche -à côté de la maison LG et IRIS- ( ville )",
-            "Logement covalente -derrière hôtel Rif à coté la mosquée Imam Shaafei (Eulma )",
-        ],
+        addresses: ["العنوان حي حشمي110 مسكن اج ع أ3 قسم 71 مج بلدية سطيف"],
     },
     {
         wilayaCode: "20",
         wilayaName: "Saïda",
-        addresses: ["Cité 5 juillet -en face la pharmacie 5 juillet-"],
+        addresses: ["حي 250 سكن رقم02سعيدة"],
     },
     {
         wilayaCode: "21",
         wilayaName: "Skikda",
         addresses: [
-            "Cité Mohammed Namous N°02 Mag 02-pas loin de Hammam Derradji-",
+            "Quartier Mohamed Namous, immeuble n°08, rez-de-chaussée, boutique n°04 municipalité de skikda",
         ],
     },
     {
@@ -143,58 +92,44 @@ export const stopDesks = [
         wilayaCode: "23",
         wilayaName: "Annaba",
         addresses: [
-            "Rue l'avant-port-à côté de supérette Ben Amara-",
-            "EL-Bouni- En fece Algérie Télécom",
+            "Cité El Bouni groupe n° 171 section n° 54 rez-de-chaussée lot n° 03 commune d'El Bouni Annaba",
         ],
     },
     {
         wilayaCode: "24",
         wilayaName: "Guelma",
-        addresses: ["-à côté de cafètera de la fontaine"],
+        addresses: ["boulevard 19juin n:135 a côté pharmacie seraidi"],
     },
     {
         wilayaCode: "25",
         wilayaName: "Constantine",
         addresses: [
-            "Cité tlemcen,72, Zouaghi Slimen",
-            "Zone industrielle, Nouvelle ville Ali Mendjeli",
-            "Belle vue",
+            "Zone d'activité ain el bey Ali mendjili NV el khroub derrière méga pizza",
         ],
     },
     {
         wilayaCode: "26",
         wilayaName: "Médéa",
         addresses: [
-            "Beziwech rue takhabit-au-dessous du cabinet de gynécologie dr khelifi-",
+            "العنوان: طريق الجزائر بجانب البركة للتنسيط مقابل باطيمات خرشف",
         ],
     },
     {
         wilayaCode: "27",
         wilayaName: "Mostaganem",
-        addresses: [
-            "Cite 400 logement bâtiment A02 N°16 a cote de la mosquée kaboura Mostaganem ville",
-        ],
+        addresses: ["Pépinière Mostaganem lycée ould kablia"],
     },
     {
         wilayaCode: "28",
         wilayaName: "M'Sila",
         addresses: [
-            "Cité cheikh Mokrani -à côté de la mosquée Aicha Oum el mouminine",
-            "BOUSAADA: City HADHABA Rue Mohamed Atik N° 52/11 Boussaâda À Côté de Branche Municipale",
+            "Boutique 29/71 28/70, rez - de- chaussée , bâtiment B5, plan 01, emplacement 03 municipalité de m'sila",
         ],
     },
     {
         wilayaCode: "29",
         wilayaName: "Mascara",
-        addresses: ["حي بابا علي شارع مهور محي الدين رقم 11"],
-    },
-    {
-        wilayaCode: "30",
-        wilayaName: "Ouargla",
-        addresses: [
-            "Cité tazegrar – a cote hôtel de police -",
-            "HASSI MESSAOUD: Cite 1850 logements en face (maison kia)",
-        ],
+        addresses: ["Cité baba Ali rue mahour mahaieddine N11"],
     },
     {
         wilayaCode: "31",
@@ -202,108 +137,47 @@ export const stopDesks = [
         addresses: ["Maraval à côté de la mosquée de la city douanière"],
     },
     {
-        wilayaCode: "32",
-        wilayaName: "El Bayadh",
-        addresses: [
-            "Cité ancien stade-à côté de l’huissier de justice Djouadi Malika-",
-        ],
-    },
-    {
         wilayaCode: "34",
         wilayaName: "Bordj Bou Arréridj",
-        addresses: ["Rue chelbabi Messaoud en face ( showroom amir auto)"],
+        addresses: [
+            "عمارات عدل حي 120 مسكن. العمارة أ أمام دار المالية وفرقة الدرك الوطني مقابل صيدلية بن عباس-",
+        ],
     },
     {
         wilayaCode: "35",
         wilayaName: "Boumerdès",
         addresses: [
-            "Cité 11 décembre 2eme tranche Boumerdes ville, 4 eme rue après rose et bleu ( un magasin connu pour les vêtements enfant)",
+            "Cité 11 décembre 2eme tranche Boumerdes ville 4 eme rue après rose et bleu ( un magasin connu pour les vêtements enfant)",
         ],
     },
     {
         wilayaCode: "36",
         wilayaName: "El Tarf",
-        addresses: ["Rue khmiss tine -en face le premier arrondissement-"],
-    },
-    {
-        wilayaCode: "38",
-        wilayaName: "Tissemsilt",
-        addresses: ["Quartier El-Marjah- a côté de la pharmacie BEN Moussa"],
-    },
-    {
-        wilayaCode: "39",
-        wilayaName: "El Oued",
-        addresses: ["Cité Sidi Abdellah,-après la poste"],
+        addresses: ["المحل رقم 3 شارع العلمي بودور بلدية الطارف hlm"],
     },
     {
         wilayaCode: "40",
         wilayaName: "Khenchela",
-        addresses: [
-            "Route Babar 1, Bou Maaraf, Lablali- a côté de supérette Merah et de la clinique Al-Ihsan",
-        ],
+        addresses: ["ممرات حفظاري أحمد بجانب AXA ASSURANCE بلدية خنشلة"],
     },
     {
         wilayaCode: "41",
         wilayaName: "Souk Ahras",
-        addresses: ["Route national N°16 les sapains."],
-    },
-    {
-        wilayaCode: "42",
-        wilayaName: "Tipaza",
-        addresses: [
-            "La nouvelle AADL 1700- en face l’ONPS.",
-            "Route d'Alger a coté du café de ver ( kolea )",
-        ],
+        addresses: ["تخصيص المنطقة 1 و 2 سوق اهراس"],
     },
     {
         wilayaCode: "43",
         wilayaName: "Mila",
-        addresses: ["Jamouaa Milkia N°34 -à côté l’agence Sonal gaz-"],
+        addresses: ["الطابق تحت الارضي بناية مشتركة رقم 1 حي قصر الماء ميلة"],
     },
     {
         wilayaCode: "44",
         wilayaName: "Aïn Defla",
-        addresses: ["Rond point cyliste – en face la daira"],
-    },
-    {
-        wilayaCode: "45",
-        wilayaName: "Naâma",
-        addresses: ["Route nationale n°6, en face de l'hôtel Al-AMINE"],
+        addresses: ["حي الإخوة مازوني عين الدفلة"],
     },
     {
         wilayaCode: "46",
         wilayaName: "Aïn Témouchent",
-        addresses: [
-            "Hai Ezaitoun -à côté de la mosquée Oussama Abu Zaid (El Bechari)-",
-        ],
-    },
-    {
-        wilayaCode: "47",
-        wilayaName: "Ghardaïa",
-        addresses: [
-            "Hadj Masoud, en face au commissariat de police et de protection civile",
-        ],
-    },
-    {
-        wilayaCode: "48",
-        wilayaName: "Relizane",
-        addresses: ["Îlot 183, Boulevard de la république N°45, Centre ville"],
-    },
-    {
-        wilayaCode: "49",
-        wilayaName: "Timimoun",
-        addresses: [
-            "En face la station El Haj Mamo, à côté de la pharmacie arabe",
-        ],
-    },
-    {
-        wilayaCode: "51",
-        wilayaName: "Ouled Djellal",
-        addresses: ["Rue Mithana -à côté la maison de jeune"],
-    },
-    {
-        wilayaCode: "55",
-        wilayaName: "Touggourt",
-        addresses: ["Cité sidi abdessalem -Entre BEA et CPA-"],
+        addresses: ["سكة و الحديد، حي الزيتونة، عين تموشنت03"],
     },
 ];
