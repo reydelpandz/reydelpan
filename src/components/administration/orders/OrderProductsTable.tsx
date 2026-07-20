@@ -32,6 +32,12 @@ const OrderProductsTable = ({ products }: OrderProductsTableProps) => {
                             {item.name}
                         </TableCell>
                         <TableCell>
+                            {item.optionChoice && (
+                                <span className="block">
+                                    {item.optionName ?? "Option"}:{" "}
+                                    {item.optionChoice}
+                                </span>
+                            )}
                             {item.size && <span>Size: {item.size}</span>}
                             {item.color && (
                                 <span className="block">

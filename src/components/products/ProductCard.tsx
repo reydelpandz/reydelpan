@@ -17,7 +17,9 @@ interface ProductCardProps {
 
 export default function ProductCard({ product }: ProductCardProps) {
     const { inCart, addItem, removeItem } = useCart();
-    const hasDiscount = Number(product.discountedPrice) > 0;
+    // Products with a priced option must be added from the product page
+    const hasOptions = !!product.optionName;
+    const hasDiscount = !hasOptions && Number(product.discountedPrice) > 0;
     const [packImage, setPackImage] = useState<string | null>(null);
 
     useEffect(() => {
@@ -84,6 +86,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                             </div>
                         ) : (
                             <span className="font-semibold text-xs whitespace-nowrap min-w-fit sm:text-sm md:text-base">
+                                {hasOptions && "ابتداءً من "}
                                 {formatPrice(product.price)}
                             </span>
                         )}
@@ -92,18 +95,26 @@ export default function ProductCard({ product }: ProductCardProps) {
                         variant={inCart(product.id) ? "destructive" : "default"}
                         className="w-full h-8 text-[10px] px-2 sm:h-9 sm:text-xs md:h-10 md:text-sm"
                         onClick={(e) => {
+                            if (inCart(product.id)) {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                removeItem(product.id);
+                                return;
+                            }
+
+                            // Let the Link navigate to the product page so the
+                            // user can pick a choice (e.g. الوزن) first
+                            if (hasOptions) return;
+
                             e.preventDefault();
                             e.stopPropagation();
-
-                            if (inCart(product.id)) {
-                                removeItem(product.id);
-                            } else {
-                                addItem(product);
-                            }
+                            addItem(product);
                         }}
                     >
                         {inCart(product.id)
                             ? "إزالة من السلة"
+                            : hasOptions
+                            ? `اختر ${product.optionName}`
                             : "أضف إلى السلة"}
                     </Button>
                 </CardFooter>

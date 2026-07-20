@@ -15,7 +15,7 @@ type CartContext = {
     toggle: () => void;
     cartItems: CartItem[];
     getItemQuantity: (itemID: Product["id"]) => number;
-    addItem: (item: Product, selectedValues?: Record<string, string>) => void;
+    addItem: (item: Product, choice?: SelectedOptionChoice) => void;
     removeItem: (itemID: Product["id"]) => void;
     emptyCart: () => void;
     isEmpty: boolean;
@@ -29,10 +29,18 @@ type CartContext = {
     setShippingFee: React.Dispatch<React.SetStateAction<number | null>>;
 };
 
+export type SelectedOptionChoice = {
+    id: number;
+    label: string;
+    price: number;
+};
+
 export type CartItem = Product & {
     quantityInCart: number;
     finalPrice: number;
-    selectedValues: Record<string, string>;
+    // Set when the product has a priced option (e.g. الوزن) and the user picked a choice
+    optionChoiceId?: number;
+    optionChoiceLabel?: string;
 };
 
 export const CartContext = createContext<CartContext>({} as CartContext);
@@ -100,10 +108,7 @@ const CartContextProvider = ({ children }: { children: React.ReactNode }) => {
         );
     };
 
-    const addItem = (
-        item: Product,
-        selectedValues: Record<string, string> = {}
-    ) => {
+    const addItem = (item: Product, choice?: SelectedOptionChoice) => {
         if (isUnderPressure) {
             toast.error("تم إيقاف استقبال الطلبات مؤقتًا");
             return;
@@ -121,8 +126,11 @@ const CartContextProvider = ({ children }: { children: React.ReactNode }) => {
             {
                 ...item,
                 quantityInCart: 1,
-                finalPrice: item.discountedPrice || item.price,
-                selectedValues: selectedValues,
+                finalPrice: choice
+                    ? choice.price
+                    : item.discountedPrice || item.price,
+                optionChoiceId: choice?.id,
+                optionChoiceLabel: choice?.label,
             },
         ]);
 

@@ -29,6 +29,7 @@ const ProductsPage = async ({
             orderBy: { createdAt: "desc" },
             include: {
                 categories: true,
+                optionChoices: true,
             },
             skip,
             take: pageSize,

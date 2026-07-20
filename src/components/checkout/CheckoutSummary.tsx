@@ -58,6 +58,12 @@ export default function CheckoutSummary() {
                                 <h3 className="text-base font-medium">
                                     {product.name}
                                 </h3>
+                                {product.optionChoiceLabel && (
+                                    <p className="text-sm text-muted-foreground mt-0.5">
+                                        {product.optionName}:{" "}
+                                        {product.optionChoiceLabel}
+                                    </p>
+                                )}
                                 <p className="text-sm text-muted-foreground mt-1">
                                     {formatPrice(product.finalPrice)}
                                 </p>

@@ -26,10 +26,13 @@ const ProductPage = async ({
                     category: true,
                 },
             },
+            optionChoices: true,
         },
     });
 
     const hasDiscount = Number(product?.discountedPrice) > 0;
+    const hasOptions =
+        !!product?.optionName && (product?.optionChoices.length ?? 0) > 0;
 
     if (!product) {
         redirect("/products");
@@ -82,7 +85,18 @@ const ProductPage = async ({
 
                             <div className="flex items-center gap-3 mb-4">
                                 <div className="flex items-center gap-3 mb-4">
-                                    {hasDiscount ? (
+                                    {hasOptions ? (
+                                        <span className="text-2xl font-bold text-primary">
+                                            ابتداءً من{" "}
+                                            {formatPrice(
+                                                Math.min(
+                                                    ...product.optionChoices.map(
+                                                        (choice) => choice.price
+                                                    )
+                                                )
+                                            )}
+                                        </span>
+                                    ) : hasDiscount ? (
                                         <div className="flex items-center gap-3">
                                             <span className="text-2xl font-bold text-primary">
                                                 {formatPrice(

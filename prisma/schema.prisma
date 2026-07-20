@@ -111,6 +111,9 @@ model Product {
   images                     String[]
   sizes                      String[]
   colors                     String[]
+  // Optional priced option (e.g. "الوزن") — each choice has its own full price
+  optionName                 String?
+  optionChoices              ProductOptionChoice[]
   categories                 ProductCategory[]
   createdAt                  DateTime          @default(now())
   updatedAt                  DateTime          @updatedAt
@@ -123,6 +126,14 @@ model Category {
   priority Int
   image    String?
   products ProductCategory[]
+}
+
+model ProductOptionChoice {
+  id        Int     @id @default(autoincrement())
+  label     String
+  price     Float
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId Int
 }
 
 model ProductCategory {
@@ -142,6 +153,9 @@ model OrderedProduct {
   quantity    Int
   size        String?
   color       String?
+  // Snapshot of the chosen option at order time (e.g. "الوزن" / "2 كغ")
+  optionName   String?
+  optionChoice String?
   product     Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
   productId   Int? // Can be nullable in case the product is later deleted
   order       Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)

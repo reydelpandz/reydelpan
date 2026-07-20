@@ -136,6 +136,8 @@ export default function CheckoutForm({
                 products: cartItems.map((product) => ({
                     id: product.id,
                     quantityInCart: product.quantityInCart,
+                    optionChoiceId: product.optionChoiceId,
+                    optionChoiceLabel: product.optionChoiceLabel,
                 })),
                 note: values.note,
             };

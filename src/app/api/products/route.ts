@@ -18,7 +18,23 @@ export async function POST(request: Request) {
             );
         }
 
-        const { categories, ...productData } = body;
+        const { categories, optionChoices, ...productData } = body;
+
+        const choices: { label: string; price: number }[] = (
+            optionChoices || []
+        ).map((choice: { label: string; price: number }) => ({
+            label: String(choice.label),
+            price: Number(choice.price),
+        }));
+
+        // Keep the base price coherent with the choices so listings/sorting
+        // (which use product.price) show the cheapest choice
+        if (choices.length > 0) {
+            productData.price = Math.min(...choices.map((c) => c.price));
+            productData.discountedPrice = 0;
+        } else {
+            productData.optionName = null;
+        }
 
         await prisma.product.create({
             data: {
@@ -26,6 +42,9 @@ export async function POST(request: Request) {
                 slug: slugify(body.name),
                 categories: {
                     create: categories || [],
+                },
+                optionChoices: {
+                    create: choices,
                 },
             },
             include: {

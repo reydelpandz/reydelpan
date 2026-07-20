@@ -1,8 +1,9 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import z from "zod";
+import { Plus, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
     Sheet,
@@ -36,19 +37,19 @@ import type { MediaFile } from "@/lib/media";
 import ImageSelector from "./ImageSelector";
 
 const formSchema = z.object({
-    name: z.string().min(1, "Name is required"),
-    shortDescription: z.string().min(1, "Short description is required"),
-    longDescription: z.string().min(1, "Long description is required"),
-    price: z.coerce.number().nonnegative("Price must be positive"),
+    name: z.string().min(1, "الاسم مطلوب"),
+    shortDescription: z.string().min(1, "الوصف القصير مطلوب"),
+    longDescription: z.string().min(1, "الوصف الطويل مطلوب"),
+    price: z.coerce.number().nonnegative("يجب أن يكون السعر رقمًا موجبًا"),
     discountedPrice: z.coerce
         .number()
-        .nonnegative("Discounted price must be positive")
+        .nonnegative("يجب أن يكون السعر بعد التخفيض رقمًا موجبًا")
         .optional(),
     quantity: z.coerce
         .number()
         .int()
-        .nonnegative("Quantity must be a positive integer"),
-    images: z.array(z.string()).min(1, "At least one image is required"),
+        .nonnegative("يجب أن تكون الكمية عددًا صحيحًا موجبًا"),
+    images: z.array(z.string()).min(1, "مطلوب صورة واحدة على الأقل"),
     categories: z.array(z.string()),
     isHidden: z.boolean(),
     isFeatured: z.boolean(),
@@ -56,6 +57,28 @@ const formSchema = z.object({
     sizes: z.array(z.string()),
     colors: z.array(z.string()),
     packPreviewImageBackground: z.string().optional(),
+    optionName: z.string().optional(),
+    optionChoices: z.array(
+        z.object({
+            label: z.string().min(1, "التسمية مطلوبة"),
+            price: z.coerce.number().positive("يجب أن يكون السعر رقمًا موجبًا"),
+        })
+    ),
+}).superRefine((data, ctx) => {
+    if (data.optionName?.trim() && data.optionChoices.length === 0) {
+        ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            path: ["optionName"],
+            message: "أضف خيارًا واحدًا على الأقل، أو امسح اسم الخيار",
+        });
+    }
+    if (!data.optionName?.trim() && data.optionChoices.length > 0) {
+        ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            path: ["optionName"],
+            message: "اسم الخيار مطلوب عند وجود خيارات",
+        });
+    }
 });
 
 type ProductFormValues = z.infer<typeof formSchema>;
@@ -93,7 +116,18 @@ const ProductModal = ({
             isFeatured: false,
             isPack: false,
             packPreviewImageBackground: "#d6e4f0",
+            optionName: "",
+            optionChoices: [],
         },
+    });
+
+    const {
+        fields: choiceFields,
+        append: appendChoice,
+        remove: removeChoice,
+    } = useFieldArray({
+        control: form.control,
+        name: "optionChoices",
     });
 
     const name = form.watch("name");
@@ -125,6 +159,8 @@ const ProductModal = ({
                 isHidden: values.isHidden,
                 isFeatured: values.isFeatured,
                 isPack: values.isPack,
+                optionName: values.optionName?.trim() || null,
+                optionChoices: values.optionChoices,
             };
             await axios.post("/api/products", productData);
             toggle("product");
@@ -153,6 +189,8 @@ const ProductModal = ({
                 isFeatured: values.isFeatured,
                 isPack: values.isPack,
                 packPreviewImageBackground: values.packPreviewImageBackground,
+                optionName: values.optionName?.trim() || null,
+                optionChoices: values.optionChoices,
             };
             await axios.put(
                 `/api/products/${selectedProduct!.id}`,
@@ -193,6 +231,14 @@ const ProductModal = ({
                 "packPreviewImageBackground",
                 selectedProduct.packPreviewImageBackground
             );
+            form.setValue("optionName", selectedProduct.optionName ?? "");
+            form.setValue(
+                "optionChoices",
+                selectedProduct.optionChoices.map((choice) => ({
+                    label: choice.label,
+                    price: choice.price,
+                }))
+            );
         } else {
             form.reset({
                 name: "",
@@ -209,6 +255,8 @@ const ProductModal = ({
                 isFeatured: false,
                 isPack: false,
                 packPreviewImageBackground: "#d6e4f0",
+                optionName: "",
+                optionChoices: [],
             });
         }
     }, [isOpen("product"), isEditMode, selectedProduct]);
@@ -240,13 +288,14 @@ const ProductModal = ({
         >
             <SheetContent className="overflow-y-auto sm:max-w-md">
                 <SheetHeader>
-                    <SheetTitle>
-                        {isEditMode ? "Edit Product" : "Create Product"}
+                    <SheetTitle dir="rtl">
+                        {isEditMode ? "تعديل المنتج" : "إضافة منتج"}
                     </SheetTitle>
                 </SheetHeader>
 
                 <Form {...form}>
                     <form
+                        dir="rtl"
                         onSubmit={form.handleSubmit(
                             isEditMode ? handleUpdate : handleCreate
                         )}
@@ -258,16 +307,19 @@ const ProductModal = ({
                             name="name"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Name</FormLabel>
+                                    <FormLabel>الاسم</FormLabel>
                                     <FormControl>
                                         <Input
-                                            placeholder="Product name"
+                                            placeholder="اسم المنتج"
                                             {...field}
                                         />
                                     </FormControl>
                                     <FormDescription>
-                                        This product will be available at:{" "}
-                                        <span className="font-semibold">
+                                        سيكون هذا المنتج متاحًا على:{" "}
+                                        <span
+                                            className="font-semibold"
+                                            dir="ltr"
+                                        >
                                             {window.location.origin}/products/
                                             {slug}
                                         </span>
@@ -283,7 +335,7 @@ const ProductModal = ({
                                 name="price"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Price</FormLabel>
+                                        <FormLabel>السعر</FormLabel>
                                         <FormControl>
                                             <Input
                                                 type="number"
@@ -302,7 +354,7 @@ const ProductModal = ({
                                 name="discountedPrice"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Discounted Price</FormLabel>
+                                        <FormLabel>السعر بعد التخفيض</FormLabel>
                                         <FormControl>
                                             <Input
                                                 type="number"
@@ -322,7 +374,7 @@ const ProductModal = ({
                             name="quantity"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Quantity</FormLabel>
+                                    <FormLabel>الكمية</FormLabel>
                                     <FormControl>
                                         <Input
                                             type="number"
@@ -335,12 +387,98 @@ const ProductModal = ({
                             )}
                         />
 
+                        <div className="space-y-3 rounded-md border p-3">
+                            <FormField
+                                control={form.control}
+                                name="optionName"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>
+                                            خيار المنتج (اختياري)
+                                        </FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                placeholder="مثال: الوزن"
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                        <FormDescription>
+                                            يجب على العميل اختيار واحد من
+                                            الخيارات. لكل خيار سعره الكامل الخاص
+                                            (يحل محل سعر المنتج).
+                                        </FormDescription>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+
+                            {choiceFields.map((choiceField, index) => (
+                                <div
+                                    className="flex items-start gap-2"
+                                    key={choiceField.id}
+                                >
+                                    <FormField
+                                        control={form.control}
+                                        name={`optionChoices.${index}.label`}
+                                        render={({ field }) => (
+                                            <FormItem className="flex-1">
+                                                <FormControl>
+                                                    <Input
+                                                        placeholder="مثال: 1 كغ"
+                                                        {...field}
+                                                    />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                    <FormField
+                                        control={form.control}
+                                        name={`optionChoices.${index}.price`}
+                                        render={({ field }) => (
+                                            <FormItem className="w-28">
+                                                <FormControl>
+                                                    <Input
+                                                        type="number"
+                                                        step="0.01"
+                                                        placeholder="السعر"
+                                                        {...field}
+                                                    />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                    <Button
+                                        type="button"
+                                        variant="destructive"
+                                        size="icon"
+                                        onClick={() => removeChoice(index)}
+                                    >
+                                        <Trash2 className="h-4 w-4" />
+                                    </Button>
+                                </div>
+                            ))}
+
+                            <Button
+                                type="button"
+                                variant="outline"
+                                size="sm"
+                                onClick={() =>
+                                    appendChoice({ label: "", price: 0 })
+                                }
+                            >
+                                <Plus className="me-1 h-4 w-4" />
+                                إضافة خيار
+                            </Button>
+                        </div>
+
                         <FormField
                             control={form.control}
                             name="categories"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Categories</FormLabel>
+                                    <FormLabel>الفئات</FormLabel>
 
                                     <FormControl>
                                         <MultiSelect
@@ -356,7 +494,7 @@ const ProductModal = ({
                                                 (category) =>
                                                     category.categoryId.toString()
                                             )}
-                                            placeholder="Choose categories..."
+                                            placeholder="اختر الفئات..."
                                         />
                                     </FormControl>
                                     <FormMessage />
@@ -369,10 +507,10 @@ const ProductModal = ({
                             name="shortDescription"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Short Description</FormLabel>
+                                    <FormLabel>وصف قصير</FormLabel>
                                     <FormControl>
                                         <Input
-                                            placeholder="Brief description"
+                                            placeholder="وصف مختصر"
                                             {...field}
                                         />
                                     </FormControl>
@@ -393,7 +531,7 @@ const ProductModal = ({
                             name="images"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Images</FormLabel>
+                                    <FormLabel>الصور</FormLabel>
                                     <ImageSelector
                                         mediaFiles={mediaFiles}
                                         images={field.value ?? []}
@@ -402,8 +540,7 @@ const ProductModal = ({
                                         }
                                     />
                                     <FormDescription>
-                                        The first image you select will be used
-                                        as the preview
+                                        ستُستخدم أول صورة تختارها كصورة للمعاينة
                                     </FormDescription>
                                     <FormMessage />
                                 </FormItem>
@@ -415,7 +552,7 @@ const ProductModal = ({
                                 control={form.control}
                                 name="isFeatured"
                                 render={({ field }) => (
-                                    <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                                    <FormItem className="flex flex-row items-start gap-3 space-y-0">
                                         <FormControl>
                                             <Checkbox
                                                 checked={field.value}
@@ -423,7 +560,7 @@ const ProductModal = ({
                                             />
                                         </FormControl>
                                         <FormLabel className="font-normal">
-                                            Mark as Featured
+                                            منتج مميّز
                                         </FormLabel>
                                     </FormItem>
                                 )}
@@ -432,7 +569,7 @@ const ProductModal = ({
                                 control={form.control}
                                 name="isHidden"
                                 render={({ field }) => (
-                                    <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                                    <FormItem className="flex flex-row items-start gap-3 space-y-0">
                                         <FormControl>
                                             <Checkbox
                                                 checked={field.value}
@@ -440,7 +577,7 @@ const ProductModal = ({
                                             />
                                         </FormControl>
                                         <FormLabel className="font-normal">
-                                            Mark as Hidden
+                                            إخفاء المنتج
                                         </FormLabel>
                                     </FormItem>
                                 )}
@@ -449,7 +586,7 @@ const ProductModal = ({
                                 control={form.control}
                                 name="isPack"
                                 render={({ field }) => (
-                                    <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                                    <FormItem className="flex flex-row items-start gap-3 space-y-0">
                                         <FormControl>
                                             <Checkbox
                                                 checked={field.value}
@@ -457,7 +594,7 @@ const ProductModal = ({
                                             />
                                         </FormControl>
                                         <FormLabel className="font-normal">
-                                            Mark as Pack
+                                            تعيين كباقة
                                         </FormLabel>
                                     </FormItem>
                                 )}
@@ -469,13 +606,13 @@ const ProductModal = ({
                                 <img
                                     src={packImage}
                                     className="rounded-md w-full"
-                                    alt="Pack Preview Image"
+                                    alt="صورة معاينة الباقة"
                                 />
                                 <FormField
                                     control={form.control}
                                     name="packPreviewImageBackground"
                                     render={({ field }) => (
-                                        <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                                        <FormItem className="flex flex-row items-start gap-3 space-y-0">
                                             <FormControl>
                                                 <Input
                                                     type="color"
@@ -484,8 +621,7 @@ const ProductModal = ({
                                                 />
                                             </FormControl>
                                             <FormLabel className="font-normal">
-                                                Pack Preview Image Background
-                                                Color
+                                                لون خلفية صورة معاينة الباقة
                                             </FormLabel>
                                         </FormItem>
                                     )}
@@ -498,7 +634,7 @@ const ProductModal = ({
                             isLoading={form.formState.isSubmitting}
                             type="submit"
                         >
-                            {isEditMode ? "Update product" : "Create product"}
+                            {isEditMode ? "تحديث المنتج" : "إضافة المنتج"}
                         </Button>
                     </form>
                 </Form>

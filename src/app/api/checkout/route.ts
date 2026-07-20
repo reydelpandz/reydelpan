@@ -6,6 +6,8 @@ import { wilayas } from "@/data/wilayas";
 const orderProductSchema = z.object({
     id: z.number(),
     quantityInCart: z.number().positive(),
+    optionChoiceId: z.number().optional(),
+    optionChoiceLabel: z.string().optional(),
 });
 
 // Define the main checkout schema
@@ -43,6 +45,9 @@ export async function POST(request: Request) {
                 where: {
                     id: { in: productIds },
                 },
+                include: {
+                    optionChoices: true,
+                },
             });
 
             // Verify all products exist and have sufficient stock
@@ -71,7 +76,42 @@ export async function POST(request: Request) {
                     const dbProduct = productsFromDb.find(
                         (p) => p.id === cartProduct.id
                     )!;
-                    const price = dbProduct.discountedPrice || dbProduct.price;
+
+                    // Products with a priced option: the price ALWAYS comes
+                    // from the chosen option choice (server-side), never from
+                    // the client
+                    let price: number;
+                    let optionName: string | null = null;
+                    let optionChoice: string | null = null;
+
+                    if (
+                        dbProduct.optionName &&
+                        dbProduct.optionChoices.length > 0
+                    ) {
+                        const choice =
+                            dbProduct.optionChoices.find(
+                                (c) => c.id === cartProduct.optionChoiceId
+                            ) ??
+                            // Fallback by label in case the admin re-saved the
+                            // product (choice ids change) while it was in a cart
+                            dbProduct.optionChoices.find(
+                                (c) =>
+                                    c.label === cartProduct.optionChoiceLabel
+                            );
+
+                        if (!choice) {
+                            throw new Error(
+                                `يرجى إعادة إضافة المنتج "${dbProduct.name}" إلى السلة (تم تحديث خياراته)`
+                            );
+                        }
+
+                        price = choice.price;
+                        optionName = dbProduct.optionName;
+                        optionChoice = choice.label;
+                    } else {
+                        price = dbProduct.discountedPrice || dbProduct.price;
+                    }
+
                     productsTotal += price * cartProduct.quantityInCart;
 
                     return {
@@ -79,6 +119,8 @@ export async function POST(request: Request) {
                         retailPrice: price,
                         quantity: cartProduct.quantityInCart,
                         productId: dbProduct.id,
+                        optionName,
+                        optionChoice,
                     };
                 }
             );
