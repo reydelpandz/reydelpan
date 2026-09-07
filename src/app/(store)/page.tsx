@@ -9,6 +9,7 @@ import { buttonVariants } from "@/components/ui/button";
 import FAQ from "@/components/home/FAQ";
 import OurCategories from "@/components/home/OurCategories";
 import Stats from "@/components/home/Stats";
+import Award from "@/components/home/Award";
 
 const Home = async () => {
     const [
@@ -77,6 +78,8 @@ const Home = async () => {
                         deliveredProductsCount={deliveredProductsCount}
                     />
                 </div>
+
+                <Award />
 
                 <Reviews />
 
