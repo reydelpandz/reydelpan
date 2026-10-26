@@ -15,8 +15,6 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertTitle } from "@/components/ui/alert";
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
 import { ORDER_STATUSES } from "@/lib/constants";
 
 const OrdersHeader = () => {
@@ -27,16 +25,19 @@ const OrdersHeader = () => {
     const [searchType, setSearchType] = useState<string>("name");
     const [searchQuery, setSearchQuery] = useState<string>("");
 
-    const statusFilter = searchParams.get("status") ?? "ALL";
-    const showAllOrders = searchParams.get("showAllOrders") === "true";
+    const statusFilter =
+        searchParams.get("status") ??
+        (searchParams.get("showAllOrders") === "true" ? "ALL" : "ACTIVE");
 
     const handleStatusChange = (value: string) => {
         const params = new URLSearchParams(searchParams.toString());
         // Reset pagination when filtering
         params.delete("page");
+        params.delete("status");
+        params.delete("showAllOrders");
         if (value === "ALL") {
-            params.delete("status");
-        } else {
+            params.set("showAllOrders", "true");
+        } else if (value !== "ACTIVE") {
             params.set("status", value);
         }
         router.push(`${pathname}?${params.toString()}`);
@@ -64,18 +65,6 @@ const OrdersHeader = () => {
             params.delete("query");
         }
 
-        router.push(`${pathname}?${params.toString()}`);
-    };
-
-    const handleShowAllChange = (checked: boolean) => {
-        const params = new URLSearchParams(searchParams.toString());
-        // Reset pagination when filtering
-        params.delete("page");
-        if (checked) {
-            params.set("showAllOrders", "true");
-        } else {
-            params.delete("showAllOrders");
-        }
         router.push(`${pathname}?${params.toString()}`);
     };
 
@@ -114,14 +103,6 @@ const OrdersHeader = () => {
                             <RiSearchLine className="size-5" />
                         </Button>
                     </div>
-                    <div className="flex items-center space-x-2">
-                        <Switch
-                            checked={showAllOrders}
-                            onCheckedChange={handleShowAllChange}
-                            id="show-all"
-                        />
-                        <Label htmlFor="show-all">Show All</Label>
-                    </div>
                 </div>
                 <div className="flex items-center gap-4">
                     <Select
@@ -129,15 +110,18 @@ const OrdersHeader = () => {
                         onValueChange={handleStatusChange}
                     >
                         <SelectTrigger className="w-[180px]">
-                            <SelectValue placeholder="Status" />
+                            <SelectValue placeholder="Show" />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="ALL">All statuses</SelectItem>
+                            <SelectItem value="ACTIVE">
+                                Active orders
+                            </SelectItem>
                             {ORDER_STATUSES.map((status) => (
                                 <SelectItem key={status} value={status}>
-                                    {status.replaceAll("_", " ")}
+                                    {status.replaceAll("_", " ")} only
                                 </SelectItem>
                             ))}
+                            <SelectItem value="ALL">All orders</SelectItem>
                         </SelectContent>
                     </Select>
                     <Link
