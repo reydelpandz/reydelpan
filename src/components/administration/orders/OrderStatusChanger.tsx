@@ -28,6 +28,7 @@ import { toast } from "sonner";
 import axios, { isAxiosError } from "axios";
 import { useRouter } from "next//navigation";
 import { Order, OrderStatus } from "@/generated/prisma";
+import { ORDER_STATUSES } from "@/lib/constants";
 
 export default function OrderStatusChanger() {
     const { isOpen, toggle, actionData: order } = useModal<Order | null>();
@@ -35,7 +36,6 @@ export default function OrderStatusChanger() {
     const [selectedStatus, setSelectedStatus] = useState<
         OrderStatus | undefined
     >(order?.status);
-    const statuses: OrderStatus[] = ["PENDING", "DELIVERED"];
 
     const { isPending, mutate } = useMutation({
         mutationFn: async () => {
@@ -104,7 +104,7 @@ export default function OrderStatusChanger() {
                                     <SelectValue placeholder="Select new status" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    {statuses.map((status) => (
+                                    {ORDER_STATUSES.map((status) => (
                                         <SelectItem key={status} value={status}>
                                             <div className="flex items-center">
                                                 <span>

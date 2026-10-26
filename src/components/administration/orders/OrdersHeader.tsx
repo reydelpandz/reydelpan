@@ -17,24 +17,7 @@ import { Button } from "@/components/ui/button";
 import { Alert, AlertTitle } from "@/components/ui/alert";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import type { OrderStatus } from "@/generated/prisma";
-
-const statuses: OrderStatus[] = [
-    "PENDING",
-    "TO_BE_CONFIRMED",
-    "SHIPPING",
-    "DELIVERED",
-    "FAILED_01",
-    "FAILED_02",
-    "FAILED_03",
-    "FAILED_04",
-    "FAILED_05",
-    "DUPLICATE",
-    "WRONG_NUMBER",
-    "WRONG_ORDER",
-    "OUT_OF_STOCK",
-    "CANCELED",
-];
+import { ORDER_STATUSES } from "@/lib/constants";
 
 const OrdersHeader = () => {
     const router = useRouter();
@@ -150,7 +133,7 @@ const OrdersHeader = () => {
                         </SelectTrigger>
                         <SelectContent>
                             <SelectItem value="ALL">All statuses</SelectItem>
-                            {statuses.map((status) => (
+                            {ORDER_STATUSES.map((status) => (
                                 <SelectItem key={status} value={status}>
                                     {status.replaceAll("_", " ")}
                                 </SelectItem>
