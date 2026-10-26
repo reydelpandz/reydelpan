@@ -21,7 +21,11 @@ const OrdersPage = async ({
         redirect("/administration/login");
     }
 
-    const status = (await searchParams).status as OrderStatus;
+    const statusParam = (await searchParams).status;
+    const status =
+        statusParam && statusParam in OrderStatus
+            ? (statusParam as OrderStatus)
+            : undefined;
     const searchType = (await searchParams).searchType;
     const query = (await searchParams).query;
     const showAllOrders = (await searchParams).showAllOrders === "true";

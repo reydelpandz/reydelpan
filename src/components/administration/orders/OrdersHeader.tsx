@@ -17,6 +17,24 @@ import { Button } from "@/components/ui/button";
 import { Alert, AlertTitle } from "@/components/ui/alert";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
+import type { OrderStatus } from "@/generated/prisma";
+
+const statuses: OrderStatus[] = [
+    "PENDING",
+    "TO_BE_CONFIRMED",
+    "SHIPPING",
+    "DELIVERED",
+    "FAILED_01",
+    "FAILED_02",
+    "FAILED_03",
+    "FAILED_04",
+    "FAILED_05",
+    "DUPLICATE",
+    "WRONG_NUMBER",
+    "WRONG_ORDER",
+    "OUT_OF_STOCK",
+    "CANCELED",
+];
 
 const OrdersHeader = () => {
     const router = useRouter();
@@ -25,6 +43,21 @@ const OrdersHeader = () => {
 
     const [searchType, setSearchType] = useState<string>("name");
     const [searchQuery, setSearchQuery] = useState<string>("");
+
+    const statusFilter = searchParams.get("status") ?? "ALL";
+    const showAllOrders = searchParams.get("showAllOrders") === "true";
+
+    const handleStatusChange = (value: string) => {
+        const params = new URLSearchParams(searchParams.toString());
+        // Reset pagination when filtering
+        params.delete("page");
+        if (value === "ALL") {
+            params.delete("status");
+        } else {
+            params.set("status", value);
+        }
+        router.push(`${pathname}?${params.toString()}`);
+    };
 
     // Initialize search values from URL params
     useEffect(() => {
@@ -51,6 +84,18 @@ const OrdersHeader = () => {
         router.push(`${pathname}?${params.toString()}`);
     };
 
+    const handleShowAllChange = (checked: boolean) => {
+        const params = new URLSearchParams(searchParams.toString());
+        // Reset pagination when filtering
+        params.delete("page");
+        if (checked) {
+            params.set("showAllOrders", "true");
+        } else {
+            params.delete("showAllOrders");
+        }
+        router.push(`${pathname}?${params.toString()}`);
+    };
+
     const handleKeyDown = (e: React.KeyboardEvent) => {
         if (e.key === "Enter") {
             handleSearch();
@@ -69,7 +114,7 @@ const OrdersHeader = () => {
                             <SelectItem value="id">Order ID</SelectItem>
                             <SelectItem value="name">Customer Name</SelectItem>
                             <SelectItem value="phone">Phone Number</SelectItem>
-                            <SelectItem value="confirmed by">
+                            <SelectItem value="confirmedBy">
                                 Confirmed By
                             </SelectItem>
                         </SelectContent>
@@ -88,19 +133,38 @@ const OrdersHeader = () => {
                     </div>
                     <div className="flex items-center space-x-2">
                         <Switch
-                            onCheckedChange={(checked) => {}}
+                            checked={showAllOrders}
+                            onCheckedChange={handleShowAllChange}
                             id="show-all"
                         />
                         <Label htmlFor="show-all">Show All</Label>
                     </div>
                 </div>
-                <Link
-                    href="/products"
-                    className={buttonVariants()}
-                    target="_blank"
-                >
-                    <RiAddLine className="size-6" />
-                </Link>
+                <div className="flex items-center gap-4">
+                    <Select
+                        value={statusFilter}
+                        onValueChange={handleStatusChange}
+                    >
+                        <SelectTrigger className="w-[180px]">
+                            <SelectValue placeholder="Status" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="ALL">All statuses</SelectItem>
+                            {statuses.map((status) => (
+                                <SelectItem key={status} value={status}>
+                                    {status.replaceAll("_", " ")}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                    <Link
+                        href="/products"
+                        className={buttonVariants()}
+                        target="_blank"
+                    >
+                        <RiAddLine className="size-6" />
+                    </Link>
+                </div>
             </div>
             <Alert variant="default" className="mb-6">
                 <RiErrorWarningFill className="size-5" />
