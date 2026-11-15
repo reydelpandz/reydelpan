@@ -1,8 +1,22 @@
 export const stopDesks = [
     {
+        wilayaCode: "01",
+        wilayaName: "Adrar",
+        addresses: [
+            "à côté de lycée ELMOGHILI, dérièrele conseil judicaire",
+        ],
+    },
+    {
         wilayaCode: "02",
         wilayaName: "Chlef",
         addresses: ["Bocca hay salam chlef"],
+    },
+    {
+        wilayaCode: "03",
+        wilayaName: "Laghouat",
+        addresses: [
+            "Cité mhafir en face parking du department de biologie",
+        ],
     },
     {
         wilayaCode: "04",
@@ -24,6 +38,16 @@ export const stopDesks = [
         addresses: ["حي 112مسكن الحي الصغير عمارة مشتركة أمام مدرسة حيطوش"],
     },
     {
+        wilayaCode: "07",
+        wilayaName: "Biskra",
+        addresses: ["El koures- en face salle des fêtes soukara-"],
+    },
+    {
+        wilayaCode: "08",
+        wilayaName: "Béchar",
+        addresses: ["Cité 220 log -à côté de LA DIRECTION DU LEAU -"],
+    },
+    {
         wilayaCode: "09",
         wilayaName: "Blida",
         addresses: [
@@ -38,14 +62,24 @@ export const stopDesks = [
         ],
     },
     {
+        wilayaCode: "11",
+        wilayaName: "Tamanrasset",
+        addresses: ["Cité el wiam en face casnos"],
+    },
+    {
         wilayaCode: "12",
         wilayaName: "Tébessa",
-        addresses: ["Dans le quartier de larmot, en face de l(hôtel al asil"],
+        addresses: ["Dans le quartier de larmot, en face de l'hôtel al asil"],
     },
     {
         wilayaCode: "13",
         wilayaName: "Tlemcen",
         addresses: ["El yamama en face la caisse des retraites ."],
+    },
+    {
+        wilayaCode: "14",
+        wilayaName: "Tiaret",
+        addresses: ["Cite polyvalent en face douk"],
     },
     {
         wilayaCode: "15",
@@ -57,6 +91,13 @@ export const stopDesks = [
         wilayaName: "Alger",
         addresses: [
             "Dar el beida, rue el boustane, 16033(GPS: flash delivery dz) OUED SEMAR SALIBA",
+        ],
+    },
+    {
+        wilayaCode: "17",
+        wilayaName: "Djelfa",
+        addresses: [
+            "Cité berbih- a coté de la direction de l'action sociale et de la solidarité LA DASS",
         ],
     },
     {
@@ -105,13 +146,14 @@ export const stopDesks = [
         wilayaName: "Constantine",
         addresses: [
             "Zone d'activité ain el bey Ali mendjili NV el khroub derrière méga pizza",
+            "Les combattants (belle vue) hotel militaire, Arret tramway : fadila saadane, Ront point malek hedad.",
         ],
     },
     {
         wilayaCode: "26",
         wilayaName: "Médéa",
         addresses: [
-            "العنوان: طريق الجزائر بجانب البركة للتنسيط مقابل باطيمات خرشف",
+            "العنوان: طريق الجزائر بجانب البركة للتقسيط مقابل باطيمات خرشف",
         ],
     },
     {
@@ -132,9 +174,21 @@ export const stopDesks = [
         addresses: ["Cité baba Ali rue mahour mahaieddine N11"],
     },
     {
+        wilayaCode: "30",
+        wilayaName: "Ouargla",
+        addresses: ["Cité tazegrar – a cote hotel de police -"],
+    },
+    {
         wilayaCode: "31",
         wilayaName: "Oran",
-        addresses: ["Maraval à côté de la mosquée de la city douanière"],
+        addresses: [
+            "Maraval a coté de la cité douanière devant Café El Akouasse",
+        ],
+    },
+    {
+        wilayaCode: "32",
+        wilayaName: "El Bayadh",
+        addresses: ["rue sid hadj bahousse"],
     },
     {
         wilayaCode: "34",
@@ -156,14 +210,29 @@ export const stopDesks = [
         addresses: ["المحل رقم 3 شارع العلمي بودور بلدية الطارف hlm"],
     },
     {
+        wilayaCode: "38",
+        wilayaName: "Tissemsilt",
+        addresses: ["cite belle vue derrière Urgence Dallas"],
+    },
+    {
+        wilayaCode: "39",
+        wilayaName: "El Oued",
+        addresses: ["Cité Sidi Abdellah ,-après la poste."],
+    },
+    {
         wilayaCode: "40",
         wilayaName: "Khenchela",
-        addresses: ["ممرات حفظاري أحمد بجانب AXA ASSURANCE بلدية خنشلة"],
+        addresses: ["ممرات حفطاري أحمد بجانب AXA ASSURANCE بلدية خنشلة"],
     },
     {
         wilayaCode: "41",
         wilayaName: "Souk Ahras",
         addresses: ["تخصيص المنطقة 1 و 2 سوق اهراس"],
+    },
+    {
+        wilayaCode: "42",
+        wilayaName: "Tipaza",
+        addresses: ["حي 1700 مسكن عدل الحديقة عمارة 32"],
     },
     {
         wilayaCode: "43",
@@ -176,8 +245,42 @@ export const stopDesks = [
         addresses: ["حي الإخوة مازوني عين الدفلة"],
     },
     {
+        wilayaCode: "45",
+        wilayaName: "Naâma",
+        addresses: ["mecheria"],
+    },
+    {
         wilayaCode: "46",
         wilayaName: "Aïn Témouchent",
         addresses: ["سكة و الحديد، حي الزيتونة، عين تموشنت03"],
+    },
+    {
+        wilayaCode: "47",
+        wilayaName: "Ghardaïa",
+        addresses: [
+            "Hadj Masoud, en face au commissariat de police et de protection civile",
+        ],
+    },
+    {
+        wilayaCode: "48",
+        wilayaName: "Relizane",
+        addresses: ["شارع بلعسل رقم 26 بلدية غليزان"],
+    },
+    {
+        wilayaCode: "51",
+        wilayaName: "Ouled Djellal",
+        addresses: ["Rue Mithana -à côté la maison de jeune"],
+    },
+    {
+        wilayaCode: "52",
+        wilayaName: "Béni Abbès",
+        addresses: [
+            "Cité el moustakbel -en face de la nouvelle annexe de l'APC et du nouveau siège de la nouvelle banque",
+        ],
+    },
+    {
+        wilayaCode: "55",
+        wilayaName: "Touggourt",
+        addresses: ["Cité sidi abdessalem -Entre BEA et CPA-"],
     },
 ];
