@@ -44,7 +44,11 @@ export default function RootLayout({
                             {children}
                             <CartLink />
                         </div>
-                        <Toaster richColors />
+                        <Toaster
+                            richColors
+                            position="top-center"
+                            toastOptions={{ className: "justify-center text-center" }}
+                        />
                     </CartContextProvider>
                 </ReactQueryProvider>
             </body>

@@ -64,7 +64,9 @@ export async function POST(request: Request) {
 
                 if (dbProduct.quantity < cartProduct.quantityInCart) {
                     throw new Error(
-                        `Not enough stock for ${dbProduct.name}. Available: ${dbProduct.quantity}`
+                        dbProduct.quantity > 0
+                            ? `لا توجد كمية كافية من "${dbProduct.name}". الكمية المتوفرة: ${dbProduct.quantity}`
+                            : `المنتج "${dbProduct.name}" غير متوفر حاليًا`
                     );
                 }
             }
