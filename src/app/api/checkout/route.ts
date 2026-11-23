@@ -31,6 +31,8 @@ const checkoutSchema = z.object({
     note: z.string().max(300).optional(),
 });
 
+class StockError extends Error {}
+
 export async function POST(request: Request) {
     try {
         const body = await request.json();
@@ -63,7 +65,7 @@ export async function POST(request: Request) {
                 }
 
                 if (dbProduct.quantity < cartProduct.quantityInCart) {
-                    throw new Error(
+                    throw new StockError(
                         dbProduct.quantity > 0
                             ? `لا توجد كمية كافية من "${dbProduct.name}". الكمية المتوفرة: ${dbProduct.quantity}`
                             : `المنتج "${dbProduct.name}" غير متوفر حاليًا`
@@ -213,6 +215,13 @@ export async function POST(request: Request) {
                         message: e.message,
                     })),
                 },
+                { status: 400 }
+            );
+        }
+
+        if (error instanceof StockError) {
+            return Response.json(
+                { message: error.message, outOfStock: true },
                 { status: 400 }
             );
         }

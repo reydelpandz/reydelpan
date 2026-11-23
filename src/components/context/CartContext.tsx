@@ -7,6 +7,15 @@ import axios, { isAxiosError } from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { Product } from "@/generated/prisma";
 import { toast } from "sonner";
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 type CartContext = {
     isOpen: boolean;
@@ -27,6 +36,7 @@ type CartContext = {
     total: number;
     shippingFee: number | null;
     setShippingFee: React.Dispatch<React.SetStateAction<number | null>>;
+    showStockAlert: (message?: string) => void;
 };
 
 export type SelectedOptionChoice = {
@@ -52,6 +62,9 @@ const CartContextProvider = ({ children }: { children: React.ReactNode }) => {
     const [showCart, setShowCart] = useState(false);
     const [shippingFee, setShippingFee] = useState<number | null>(null);
     const [signalCart, setSignalCart] = useState(false);
+    const [stockAlert, setStockAlert] = useState<string | null>(null);
+    const showStockAlert = (message = "لا توجد كمية كافية في المخزون") =>
+        setStockAlert(message);
 
     const { data: isUnderPressure = false } = useQuery({
         queryKey: ["settings", "isUnderPressure"],
@@ -91,7 +104,7 @@ const CartContextProvider = ({ children }: { children: React.ReactNode }) => {
         }
 
         if (by === 1 && qtyInCart >= product.quantity) {
-            toast.error("لا توجد كمية كافية في المخزون");
+            showStockAlert();
             return;
         }
 
@@ -117,7 +130,7 @@ const CartContextProvider = ({ children }: { children: React.ReactNode }) => {
         const qtyInCart = getItemQuantity(item.id);
 
         if (qtyInCart >= item.quantity) {
-            toast.error("لا توجد كمية كافية في المخزون");
+            showStockAlert();
             return;
         }
 
@@ -186,9 +199,28 @@ const CartContextProvider = ({ children }: { children: React.ReactNode }) => {
                 total: getTotal(),
                 shippingFee,
                 setShippingFee,
+                showStockAlert,
             }}
         >
             {children}
+            <AlertDialog
+                open={stockAlert !== null}
+                onOpenChange={(open) => !open && setStockAlert(null)}
+            >
+                <AlertDialogContent dir="rtl">
+                    <AlertDialogHeader>
+                        <AlertDialogTitle className="text-center">
+                            الكمية غير متوفرة
+                        </AlertDialogTitle>
+                        <AlertDialogDescription className="text-center">
+                            {stockAlert}
+                        </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter className="sm:justify-center">
+                        <AlertDialogAction>حسنًا</AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
         </CartContext.Provider>
     );
 };

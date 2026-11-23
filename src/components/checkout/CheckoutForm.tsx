@@ -69,8 +69,14 @@ export default function CheckoutForm({
 }: CheckoutFormProps) {
     const [selectedWilaya, setSelectedWilaya] = useState<string | null>(null);
     const [communes, setCommunes] = useState<string[]>([]);
-    const { cartItems, emptyCart, setShippingFee, shippingFee, isEmpty } =
-        useCart();
+    const {
+        cartItems,
+        emptyCart,
+        setShippingFee,
+        shippingFee,
+        isEmpty,
+        showStockAlert,
+    } = useCart();
     const [isDeliverableToStopDesk, setIsDeliverableToStopDesk] =
         useState(true);
 
@@ -150,7 +156,10 @@ export default function CheckoutForm({
                 left: 0,
             });
         } catch (error) {
-            isAxiosError(error) && toast.error(error.response?.data.message);
+            if (!isAxiosError(error)) return;
+            const { message, outOfStock } = error.response?.data ?? {};
+            if (outOfStock) showStockAlert(message);
+            else toast.error(message);
         }
     }
 
